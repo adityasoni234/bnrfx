@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MT5 API Test</title>
+</head>
+<body>
+    <h1>MT5 API Connection Test</h1>
+    <button onclick="testConnection()">Test Connection</button>
+    <button onclick="testAccount()">Test Account (12345)</button>
+    <div id="result" style="margin-top: 20px; padding: 20px; background: #f0f0f0;"></div>
+
+    <script>
+        const API_URL = 'http://localhost:5000/api/broker/mt5';
+
+        async function testConnection() {
+            const result = document.getElementById('result');
+            result.innerHTML = 'Testing connection...';
+            
+            try {
+                const response = await fetch(`${API_URL}/health`);
+                const data = await response.json();
+                result.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+            } catch (error) {
+                result.innerHTML = `<span style="color: red;">Error: ${error.message}</span>`;
+            }
+        }
+
+        async function testAccount() {
+            const result = document.getElementById('result');
+            result.innerHTML = 'Fetching account 12345...';
+            
+            try {
+                const response = await fetch(`${API_URL}/accounts/12345`);
+                const data = await response.json();
+                result.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+            } catch (error) {
+                result.innerHTML = `<span style="color: red;">Error: ${error.message}</span>`;
+            }
+        }
+    </script>
+</body>
+</html>

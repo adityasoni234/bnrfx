@@ -1,0 +1,129 @@
+/* PayoutsList.css */
+
+.payouts-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.payout-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.payouts-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.payouts-header h1 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+}
+
+.payouts-header p {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0.25rem 0 0 0;
+}
+
+.payouts-filters {
+  background: white;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #f3f4f6;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.payouts-table-container {
+  background: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #f3f4f6;
+  overflow: hidden;
+}
+
+.payouts-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.payouts-table thead {
+  background-color: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.payouts-table th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.payouts-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.payouts-table tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+.payout-id {
+  font-weight: 600;
+  color: #8b5cf6;
+}
+
+.payout-amount {
+  color: #8b5cf6;
+}
+
+.no-utr {
+  color: #9ca3af;
+  font-style: italic;
+}
+
+.status-completed {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+@media (max-width: 1024px) {
+  .payouts-filters {
+    flex-direction: column;
+  }
+  
+  .payout-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .payouts-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .payouts-table-container {
+    overflow-x: auto;
+  }
+  
+  .payouts-table {
+    min-width: 1100px;
+  }
+  
+  .payout-stats {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,407 @@
+/* ===============================
+   NAVBAR.CSS (FULL FIXED)
+   =============================== */
+
+/* ---------- TOP BAR ---------- */
+.top-bar {
+  background: #0a0a0a;
+  color: #ffffff;
+  font-size: 11px;
+  padding: 8px 0;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+.top-bar-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.top-bar-left,
+.top-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.top-link {
+  color: #999;
+  text-decoration: none;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  transition: color 0.3s;
+  font-size: 11px;
+}
+
+.top-link:hover {
+  color: #00ff00;
+}
+
+.top-link.active {
+  color: #00ff00;
+}
+
+.separator {
+  color: #333;
+  margin: 0 4px;
+}
+
+.language-selector {
+  color: #999;
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.language-selector:hover {
+  color: #00ff00;
+}
+
+/* ---------- MAIN NAVBAR ---------- */
+.navbar {
+  background: #000000;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  padding: 14px 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  transition: padding 0.25s ease, box-shadow 0.25s ease;
+}
+
+.navbar.scrolled {
+  padding: 10px 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+}
+
+.navbar-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+/* ---------- LOGO ---------- */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.navbar-logo {
+  height: 56px;
+  width: auto;
+  object-fit: contain;
+  transition: transform 0.25s ease, height 0.25s ease;
+}
+
+.navbar-logo:hover {
+  transform: scale(1.04);
+}
+
+/* IMPORTANT FIX: do NOT increase logo size on scroll (your old css was 100px) */
+.navbar.scrolled .navbar-logo {
+  height: 48px;
+}
+
+/* Hide old/unused logo components */
+.logo-container,
+.logo-icon,
+.logo-text,
+.sponsorship-badge {
+  display: none !important;
+}
+
+/* ---------- NAV MENU (DESKTOP) ---------- */
+.navbar-menu {
+  display: flex;
+  list-style: none;
+  gap: 34px;
+  margin: 0;
+  padding: 0;
+  margin-left: auto;
+  align-items: center;
+}
+
+.navbar-menu li a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  transition: color 0.25s ease;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.navbar-menu li a:hover {
+  color: #00ff00;
+}
+
+/* ---------- CTA BUTTONS (DESKTOP) ---------- */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.btn-start-trading {
+  padding: 12px 26px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  white-space: nowrap;
+  background: #00ff00;
+  color: #000;
+}
+
+.btn-start-trading:hover {
+  background: #00cc00;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 255, 0, 0.25);
+}
+
+/* Broker Login Button */
+.btn-broker-login {
+  padding: 10px 24px;
+  background: transparent;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, color 0.25s ease;
+  white-space: nowrap;
+}
+
+.btn-broker-login:hover {
+  background: #ffffff;
+  color: #0a1628;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(255, 255, 255, 0.16);
+}
+
+/* ---------- HAMBURGER TOGGLE ---------- */
+.navbar-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  margin-left: auto;
+}
+
+.navbar-toggle span {
+  width: 26px;
+  height: 3px;
+  background: #ffffff;
+  border-radius: 2px;
+  transition: all 0.25s ease;
+}
+
+/* ---------- MOBILE CTA INSIDE MENU (requires JSX li.mobile-actions) ---------- */
+.mobile-actions {
+  display: none; /* desktop hidden */
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.mobile-actions .mobile-btn {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+/* ===============================
+   RESPONSIVE
+   =============================== */
+
+@media (max-width: 1200px) {
+  .navbar-container {
+    padding: 0 20px;
+  }
+  .top-bar-container {
+    padding: 0 20px;
+  }
+  .navbar-menu {
+    gap: 22px;
+  }
+  .navbar-logo {
+    height: 52px;
+  }
+  .navbar.scrolled .navbar-logo {
+    height: 46px;
+  }
+}
+
+/* MOBILE */
+@media (max-width: 968px) {
+  .top-bar {
+    display: none;
+  }
+
+  .navbar-container {
+    padding: 0 16px;
+    gap: 14px;
+  }
+
+  .navbar-logo {
+    height: 44px;
+  }
+
+  .navbar.scrolled .navbar-logo {
+    height: 40px;
+  }
+
+  /* Hide desktop CTA buttons on mobile (they will appear inside menu) */
+  .navbar-actions {
+    display: none;
+  }
+
+  /* Show hamburger */
+  .navbar-toggle {
+    display: flex;
+  }
+
+  /* Slide-out Menu */
+  .navbar-menu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 78%;
+    max-width: 320px;
+    height: 100vh;
+    background: #0a0a0a;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 90px 22px 26px;
+    gap: 18px;
+    transition: right 0.3s ease;
+    border-left: 1px solid #222;
+    z-index: 2000;
+    overflow-y: auto;
+  }
+
+  .navbar-menu.active {
+    right: 0;
+  }
+
+  .navbar-menu li {
+    width: 100%;
+  }
+
+  .navbar-menu li a {
+    display: block;
+    width: 100%;
+    padding: 12px 6px;
+    font-size: 16px;
+    border-radius: 8px;
+  }
+
+  .navbar-menu li a:hover {
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  /* Show mobile action buttons inside menu */
+  .mobile-actions {
+    display: flex;
+    width: 100%;
+  }
+
+  /* Make buttons inside menu look premium */
+  .mobile-actions .btn-start-trading {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-size: 14px;
+  }
+
+  .mobile-actions .btn-broker-login {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-size: 14px;
+    border-color: #3a3a3a;
+  }
+
+  .mobile-actions .btn-broker-login:hover {
+    border-color: #ffffff;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-container {
+    padding: 0 12px;
+  }
+
+  .navbar-logo {
+    height: 40px;
+  }
+
+  .navbar.scrolled .navbar-logo {
+    height: 36px;
+  }
+
+  .navbar-menu {
+    width: 84%;
+    padding: 86px 18px 22px;
+  }
+}
+/* ---------- MOBILE MENU HEADER + CLOSE BUTTON ---------- */
+.mobile-menu-header {
+  display: none;
+  width: 100%;
+  justify-content: flex-end;
+  margin-bottom: 6px;
+}
+
+.mobile-menu-close {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  font-size: 22px;
+  font-weight: 800;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.mobile-menu-close:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(0, 255, 0, 0.35);
+  transform: scale(1.04);
+}
+
+@media (max-width: 968px) {
+  .mobile-menu-header {
+    display: flex;
+  }
+
+  /* Push menu items a bit down because header exists */
+  .navbar-menu {
+    padding-top: 18px;
+  }
+}

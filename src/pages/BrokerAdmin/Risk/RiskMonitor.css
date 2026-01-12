@@ -1,0 +1,269 @@
+/* RiskMonitor.css */
+
+.risk-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.risk-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.stat-card-small.danger {
+  border-color: #ef4444;
+}
+
+.stat-card-small.warning {
+  border-color: #f59e0b;
+}
+
+.stat-card-small.exposure {
+  border-color: #3b82f6;
+}
+
+.stat-card-small.positions {
+  border-color: #8b5cf6;
+}
+
+.risk-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.risk-header h1 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+}
+
+.risk-header p {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0.25rem 0 0 0;
+}
+
+/* Alert Section */
+.alert-section {
+  background: white;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #f3f4f6;
+}
+
+.alert-section h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 1rem 0;
+}
+
+.alert-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.alert-card {
+  border: 2px solid;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.alert-card.danger {
+  border-color: #ef4444;
+  background-color: #fef2f2;
+}
+
+.alert-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  color: #ef4444;
+}
+
+.alert-type {
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+}
+
+.alert-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.alert-user {
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+}
+
+.alert-mt5 {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.alert-details {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.alert-details div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.alert-details .label {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.alert-details .value {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.alert-details .value.danger {
+  color: #ef4444;
+  font-size: 1.125rem;
+}
+
+/* Section */
+.section {
+  background: white;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #f3f4f6;
+}
+
+.section h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 1rem 0;
+}
+
+/* Tables */
+.risk-table-container,
+.exposure-table-container {
+  overflow-x: auto;
+}
+
+.risk-table,
+.exposure-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.risk-table thead,
+.exposure-table thead {
+  background-color: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.risk-table th,
+.exposure-table th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.risk-table td,
+.exposure-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.risk-table tbody tr:hover,
+.exposure-table tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+.margin-level {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.risk-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.symbol-name {
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 0.875rem;
+}
+
+.buy-lots {
+  color: #059669;
+  font-weight: 500;
+}
+
+.sell-lots {
+  color: #dc2626;
+  font-weight: 500;
+}
+
+.net-positive {
+  color: #059669;
+  font-weight: 600;
+}
+
+.net-negative {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.exposure-amount {
+  font-weight: 600;
+  color: #3b82f6;
+  font-size: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .risk-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .alert-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .risk-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .risk-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .risk-table,
+  .exposure-table {
+    min-width: 900px;
+  }
+}

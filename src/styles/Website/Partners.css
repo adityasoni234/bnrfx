@@ -1,0 +1,104 @@
+.partners {
+  padding: 5rem 2rem;
+  background: linear-gradient(135deg, #0A1B2E 0%, #162c42 100%);
+  color: white;
+}
+
+.partners .section-title,
+.partners .section-subtitle {
+  color: white;
+}
+
+.benefits {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin: 3rem 0;
+}
+
+.benefit {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2rem;
+  border-radius: 16px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.benefit:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-5px);
+}
+
+.benefit-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.benefit h3 {
+  font-size: 1.35rem;
+  color: #F5B301;
+  margin-bottom: 1rem;
+}
+
+.benefit p {
+  color: #B8C5D6;
+  line-height: 1.6;
+}
+
+.commission-example {
+  max-width: 600px;
+  margin: 3rem auto;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2rem;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+}
+
+.commission-example h3 {
+  color: #F5B301;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.commission-example ul {
+  list-style: none;
+  padding: 0;
+}
+
+.commission-example li {
+  padding: 0.75rem 0;
+  color: #E6EEF5;
+  font-size: 1.1rem;
+}
+
+.btn-apply {
+  display: block;
+  margin: 3rem auto 0;
+  background-color: #F5B301;
+  color: #0A1B2E;
+  border: none;
+  padding: 1rem 3rem;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-apply:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(245, 179, 1, 0.4);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .partners {
+    padding: 3rem 1.5rem;
+  }
+
+  .benefits {
+    grid-template-columns: 1fr;
+  }
+}

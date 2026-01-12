@@ -1,0 +1,347 @@
+.markets-investing-section {
+  padding: 100px 0;
+  background: linear-gradient(180deg, #ffffff 0%, #f0f9ff 100%);
+  overflow: hidden;
+}
+
+.markets-investing-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  padding: 0 20px;
+}
+
+/* Content */
+.markets-investing-content {
+  padding: 20px;
+}
+
+.markets-investing-title {
+  font-size: 48px;
+  font-weight: 800;
+  color: #0a1628;
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.markets-investing-subtitle {
+  font-size: 18px;
+  color: #666;
+  margin-bottom: 40px;
+  line-height: 1.7;
+}
+
+.investing-features {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.investing-feature-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 16px;
+  color: #333;
+  padding: 16px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+.investing-feature-item:hover {
+  transform: translateX(10px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+.feature-check-icon {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #00ff87 0%, #60efff 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0a1628;
+  font-weight: 700;
+  flex-shrink: 0;
+  font-size: 18px;
+}
+
+/* Visual Showcase */
+.markets-visual {
+  position: relative;
+  height: 700px;
+}
+
+.devices-showcase {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.device-phone-large {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 350px;
+  height: 700px;
+  z-index: 2;
+}
+
+.phone-frame {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #1a1a2e 0%, #2a2a3e 100%);
+  border-radius: 40px;
+  padding: 15px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+  border: 8px solid #2a2a3e;
+  animation: floatDevice 4s ease-in-out infinite;
+}
+
+@keyframes floatDevice {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-20px) rotate(-2deg); }
+}
+
+.phone-screen-content {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 32px;
+  overflow: hidden;
+  padding: 40px 20px;
+}
+
+.trading-app-display {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.app-stocks {
+  background: rgba(255,255,255,0.15);
+  border-radius: 20px;
+  padding: 30px;
+  backdrop-filter: blur(10px);
+}
+
+.stock-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.stock-logo {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
+  border-radius: 12px;
+  position: relative;
+}
+
+.stock-logo::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30px;
+  height: 30px;
+  background: #0a1628;
+  border-radius: 8px;
+}
+
+.stock-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  color: #ffffff;
+}
+
+.stock-name {
+  font-size: 14px;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.stock-price {
+  font-size: 28px;
+  font-weight: 800;
+}
+
+/* Medium Phone */
+.device-phone-medium {
+  position: absolute;
+  bottom: 50px;
+  right: 50px;
+  width: 280px;
+  height: 200px;
+  z-index: 3;
+}
+
+.phone-frame-small {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+  border-radius: 24px;
+  padding: 20px;
+  box-shadow: 0 20px 60px rgba(255, 215, 0, 0.4);
+  animation: floatSmallDevice 3s ease-in-out infinite;
+  animation-delay: 0.5s;
+}
+
+@keyframes floatSmallDevice {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-15px) scale(1.05); }
+}
+
+.balance-display {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.balance-icon {
+  font-size: 48px;
+}
+
+.balance-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.balance-label {
+  font-size: 12px;
+  color: #0a1628;
+  opacity: 0.8;
+  margin-bottom: 5px;
+}
+
+.balance-amount {
+  font-size: 22px;
+  font-weight: 800;
+  color: #0a1628;
+  margin-bottom: 5px;
+}
+
+.balance-amount span {
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+.balance-change {
+  font-size: 14px;
+  color: #00aa00;
+  font-weight: 700;
+}
+
+/* Floating Elements */
+.floating-elements {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.float-element {
+  position: absolute;
+  font-size: 48px;
+  animation: floatAround 4s ease-in-out infinite;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.2));
+}
+
+.float-element.coin {
+  top: 10%;
+  left: 5%;
+  animation-delay: 0s;
+}
+
+.float-element.chart {
+  top: 20%;
+  right: 8%;
+  animation-delay: 1s;
+}
+
+.float-element.arrow {
+  bottom: 30%;
+  left: 10%;
+  animation-delay: 2s;
+}
+
+.float-element.bolt {
+  bottom: 15%;
+  right: 15%;
+  animation-delay: 1.5s;
+}
+
+@keyframes floatAround {
+  0%, 100% { 
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.6;
+  }
+  50% { 
+    transform: translateY(-30px) rotate(10deg);
+    opacity: 1;
+  }
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .markets-investing-grid {
+    grid-template-columns: 1fr;
+    gap: 60px;
+  }
+  
+  .markets-visual {
+    height: 600px;
+  }
+  
+  .device-phone-large {
+    width: 300px;
+    height: 600px;
+  }
+  
+  .device-phone-medium {
+    width: 240px;
+    height: 170px;
+  }
+}
+
+@media (max-width: 768px) {
+  .markets-investing-title {
+    font-size: 36px;
+  }
+  
+  .markets-investing-subtitle {
+    font-size: 16px;
+  }
+  
+  .investing-feature-item {
+    font-size: 14px;
+  }
+  
+  .markets-visual {
+    height: 500px;
+  }
+  
+  .device-phone-large {
+    width: 250px;
+    height: 500px;
+  }
+  
+  .device-phone-medium {
+    width: 200px;
+    height: 140px;
+    bottom: 30px;
+    right: 30px;
+  }
+  
+  .float-element {
+    font-size: 32px;
+  }
+}

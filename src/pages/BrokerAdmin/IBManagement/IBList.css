@@ -1,0 +1,168 @@
+/* IBList.css */
+
+.ib-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.ib-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.stat-card-small.masters {
+  border-color: #3b82f6;
+}
+
+.stat-card-small.super-masters {
+  border-color: #8b5cf6;
+}
+
+.stat-card-small.rebates {
+  border-color: #10b981;
+}
+
+.ib-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ib-header h1 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+}
+
+.ib-header p {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0.25rem 0 0 0;
+}
+
+.ib-filters {
+  background: white;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #f3f4f6;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.ib-table-container {
+  background: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #f3f4f6;
+  overflow: hidden;
+}
+
+.ib-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.ib-table thead {
+  background-color: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.ib-table th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ib-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.ib-table tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+.role-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.role-super_master {
+  background-color: #ede9fe;
+  color: #6b21a8;
+}
+
+.role-master {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.parent-name {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.no-parent {
+  color: #9ca3af;
+  font-style: italic;
+  font-size: 0.875rem;
+}
+
+.client-count {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #6b7280;
+}
+
+.client-count.active {
+  color: #059669;
+}
+
+.rebate-amount {
+  font-weight: 600;
+  color: #059669;
+  font-size: 1rem;
+}
+
+@media (max-width: 1024px) {
+  .ib-filters {
+    flex-direction: column;
+  }
+  
+  .ib-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .ib-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .ib-table-container {
+    overflow-x: auto;
+  }
+  
+  .ib-table {
+    min-width: 1100px;
+  }
+  
+  .ib-stats {
+    grid-template-columns: 1fr;
+  }
+}

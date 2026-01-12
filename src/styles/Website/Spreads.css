@@ -1,0 +1,281 @@
+.partnership-section {
+  padding: 100px 0;
+  background: linear-gradient(135deg, #0a1628 0%, #1a3a52 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.partnership-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 50%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(102, 126, 234, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.partnership-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  padding: 0 20px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Visual Side */
+.partnership-visual {
+  position: relative;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.partnership-graphic {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.building-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: floatBuilding 4s ease-in-out infinite;
+}
+
+@keyframes floatBuilding {
+  0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+  50% { transform: translate(-50%, -50%) translateY(-20px); }
+}
+
+.building-structure {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  filter: drop-shadow(0 20px 40px rgba(0,0,0,0.5));
+}
+
+.building-roof {
+  width: 0;
+  height: 0;
+  border-left: 150px solid transparent;
+  border-right: 150px solid transparent;
+  border-bottom: 80px solid rgba(255, 215, 0, 0.3);
+  border-radius: 10px;
+}
+
+.building-pillars {
+  display: flex;
+  justify-content: space-around;
+  width: 260px;
+  margin-top: -10px;
+}
+
+.pillar {
+  width: 40px;
+  height: 180px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.1) 100%);
+  border-radius: 8px;
+  box-shadow: inset 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.building-base {
+  width: 300px;
+  height: 40px;
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.4) 0%, rgba(255, 237, 78, 0.4) 100%);
+  border-radius: 8px;
+  margin-top: -10px;
+}
+
+/* Card Icon */
+.card-icon {
+  position: absolute;
+  bottom: 50px;
+  right: 50px;
+  animation: floatCard 3s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+@keyframes floatCard {
+  0%, 100% { transform: translateY(0) rotate(-5deg); }
+  50% { transform: translateY(-15px) rotate(-5deg); }
+}
+
+.credit-card {
+  width: 280px;
+  height: 180px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-chip {
+  width: 50px;
+  height: 40px;
+  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+  border-radius: 8px;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.card-number {
+  color: rgba(255,255,255,0.9);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  font-family: 'Courier New', monospace;
+}
+
+/* Content Side */
+.partnership-content {
+  color: #ffffff;
+  padding: 20px;
+}
+
+.partnership-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #0a1628;
+  margin-bottom: 30px;
+}
+
+.badge-icon-partner {
+  font-size: 18px;
+}
+
+.partnership-title {
+  font-size: 48px;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.partnership-subtitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffd700;
+  margin-bottom: 24px;
+  line-height: 1.4;
+}
+
+.partnership-description {
+  font-size: 16px;
+  color: #b8c5d6;
+  line-height: 1.8;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .partnership-grid {
+    grid-template-columns: 1fr;
+    gap: 60px;
+  }
+  
+  .partnership-visual {
+    height: 400px;
+  }
+  
+  .building-structure {
+    width: 250px;
+  }
+  
+  .building-roof {
+    border-left-width: 125px;
+    border-right-width: 125px;
+    border-bottom-width: 70px;
+  }
+  
+  .building-pillars {
+    width: 220px;
+  }
+  
+  .building-base {
+    width: 250px;
+  }
+  
+  .credit-card {
+    width: 240px;
+    height: 150px;
+  }
+}
+
+@media (max-width: 768px) {
+  .partnership-title {
+    font-size: 36px;
+  }
+  
+  .partnership-subtitle {
+    font-size: 18px;
+  }
+  
+  .partnership-description {
+    font-size: 14px;
+  }
+  
+  .partnership-visual {
+    height: 350px;
+  }
+  
+  .building-structure {
+    width: 200px;
+  }
+  
+  .building-roof {
+    border-left-width: 100px;
+    border-right-width: 100px;
+    border-bottom-width: 60px;
+  }
+  
+  .building-pillars {
+    width: 180px;
+  }
+  
+  .pillar {
+    width: 30px;
+    height: 140px;
+  }
+  
+  .building-base {
+    width: 200px;
+    height: 30px;
+  }
+  
+  .card-icon {
+    bottom: 30px;
+    right: 30px;
+  }
+  
+  .credit-card {
+    width: 200px;
+    height: 120px;
+    padding: 20px;
+  }
+  
+  .card-chip {
+    width: 40px;
+    height: 30px;
+  }
+  
+  .card-number {
+    font-size: 14px;
+  }
+}
