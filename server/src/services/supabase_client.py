@@ -40,8 +40,8 @@ class SupabaseService:
             ValueError: If required environment variables are missing
         """
         if cls._instance is None:
-            supabase_url = "https://cktqxgrbjnfkjwxexway.supabase.co"
-            supabase_service_key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNrdHF4Z3Jiam5ma2p3eGV4d2F5Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2NzIwNjA3OCwiZXhwIjoyMDgyNzgyMDc4fQ.gVrIIKMcUHdZcZWEucgbLTo5o6_qsSnHHEh-b6yQOTU"
+            supabase_url = "https://exuyvavqbohnrrwwradm.supabase.co"
+            supabase_service_key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV4dXl2YXZxYm9obnJyd3dyYWRtIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2NzcwNzI0OCwiZXhwIjoyMDgzMjgzMjQ4fQ.cfEallKt-2EvbEWVXACeSVWyD13ibsr65zQsuLyPynE"
             
             if not supabase_service_key:
                 raise ValueError("SUPABASE_SERVICE_KEY environment variable is not set")
