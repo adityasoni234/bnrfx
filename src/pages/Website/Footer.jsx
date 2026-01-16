@@ -1,47 +1,48 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import '../../styles/Website/Footer.css';
 
 function Footer() {
   const footerLinks = {
     company: [
-      'Why BNR Fx',
-      'Contact Us',
-      'Awards',
-      'Regulation',
-      'Career'
+      { name: 'Why BNR Fx', path: '/company/why-bnr-fx' },
+      { name: 'Contact Us', path: '/company/contact-us' },
+      { name: 'Awards', path: '/company/awards' },
+      { name: 'Regulation', path: '/company/regulation' },
+      { name: 'Career', path: '/company/career' }
     ],
     importantLinks: [
-      'Trading Rewards',
-      'Exclusive Rewards',
-      'Partnership',
-      '20% Deposit Bonus'
+      { name: 'Trading Rewards', path: '/important-links/trading-rewards' },
+      { name: 'Exclusive Rewards', path: '/important-links/exclusive-rewards' },
+      { name: 'Partnership', path: '/important-links/partnership' },
+      { name: '20% Deposit Bonus', path: '/important-links/deposit-bonus' }
     ],
     extras: [
-      'Social Media',
-      'Margin Calculator'
+      { name: 'Social Media', path: '/extras/social-media' },
+      { name: 'Margin Calculator', path: '/extras/margin-calculator' }
     ],
     accounts: [
-      'Demo Account',
-      'ENC Account',
-      'Standard Account',
-      'Premium Account'
+      { name: 'Demo Account', path: '/accounts/demo-account' },
+      { name: 'ENC Account', path: '/accounts/enc-account' },
+      { name: 'Standard Account', path: '/accounts/standard-account' },
+      { name: 'Premium Account', path: '/accounts/premium-account' }
     ],
     forex: [
-      'Trading',
-      'Islamic Account',
-      'Trading Condition',
-      'Account Comparison'
+      { name: 'Trading', path: '/forex/trading' },
+      { name: 'Islamic Account', path: '/forex/islamic-account' },
+      { name: 'Trading Condition', path: '/forex/trading-conditions' },
+      { name: 'Account Comparison', path: '/forex/account-comparison' }
     ],
     financial: [
-      'Security of Funds',
-      'Deposit & Withdrawal',
-      'Negative Balance Protection'
+      { name: 'Security of Funds', path: '/financial/security-of-funds' },
+      { name: 'Deposit & Withdrawal', path: '/financial/deposit-withdrawal' },
+      { name: 'Negative Balance Protection', path: '/financial/negative-balance-protection' }
     ],
     platform: [
-      'All Terminal',
-      'Download For PC',
-      'Download For Android',
-      'Download For Apple'
+      { name: 'All Terminal', path: '/platform/all-terminal' },
+      { name: 'Download For PC', path: '/platform/download-pc' },
+      { name: 'Download For Android', path: '/platform/download-android' },
+      { name: 'Download For Apple', path: '/platform/download-apple' }
     ]
   };
 
@@ -53,7 +54,7 @@ function Footer() {
           <div className="footer-grid">
             {/* Company Info */}
             <div className="footer-column footer-brand">
-              <div className="footer-logo">
+              <Link to="/" className="footer-logo">
                 <div className="logo-icon-footer">
                   <div className="bar bar1"></div>
                   <div className="bar bar2"></div>
@@ -62,7 +63,7 @@ function Footer() {
                 <div className="logo-text-footer">
                   <span className="fx-text">BNR Fx</span>
                 </div>
-              </div>
+              </Link>
               <p className="footer-description">
                 BNR Fx is a comprehensive platform designed to empower traders at every level. 
                 BNR Fx provides the tools, technology, and support you need to succeed in the 
@@ -71,16 +72,16 @@ function Footer() {
               
               {/* Social Icons */}
               <div className="social-icons">
-                <a href="#twitter" className="social-icon" aria-label="Twitter">
+                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Twitter">
                   <span>𝕏</span>
                 </a>
-                <a href="#facebook" className="social-icon" aria-label="Facebook">
+                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Facebook">
                   <span>f</span>
                 </a>
-                <a href="#instagram" className="social-icon" aria-label="Instagram">
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Instagram">
                   <span>📷</span>
                 </a>
-                <a href="#linkedin" className="social-icon" aria-label="LinkedIn">
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="LinkedIn">
                   <span>in</span>
                 </a>
               </div>
@@ -92,7 +93,7 @@ function Footer() {
               <ul className="footer-links">
                 {footerLinks.company.map((link, index) => (
                   <li key={index}>
-                    <a href={`#${link.toLowerCase().replace(/\s+/g, '-')}`}>{link}</a>
+                    <Link to={link.path}>{link.name}</Link>
                   </li>
                 ))}
               </ul>
@@ -104,7 +105,7 @@ function Footer() {
               <ul className="footer-links">
                 {footerLinks.importantLinks.map((link, index) => (
                   <li key={index}>
-                    <a href={`#${link.toLowerCase().replace(/\s+/g, '-')}`}>{link}</a>
+                    <Link to={link.path}>{link.name}</Link>
                   </li>
                 ))}
               </ul>
@@ -116,7 +117,7 @@ function Footer() {
               <ul className="footer-links">
                 {footerLinks.extras.map((link, index) => (
                   <li key={index}>
-                    <a href={`#${link.toLowerCase().replace(/\s+/g, '-')}`}>{link}</a>
+                    <Link to={link.path}>{link.name}</Link>
                   </li>
                 ))}
               </ul>
@@ -128,7 +129,7 @@ function Footer() {
               <ul className="footer-links">
                 {footerLinks.accounts.map((link, index) => (
                   <li key={index}>
-                    <a href={`#${link.toLowerCase().replace(/\s+/g, '-')}`}>{link}</a>
+                    <Link to={link.path}>{link.name}</Link>
                   </li>
                 ))}
               </ul>
@@ -140,7 +141,7 @@ function Footer() {
               <ul className="footer-links">
                 {footerLinks.forex.map((link, index) => (
                   <li key={index}>
-                    <a href={`#${link.toLowerCase().replace(/\s+/g, '-')}`}>{link}</a>
+                    <Link to={link.path}>{link.name}</Link>
                   </li>
                 ))}
               </ul>
@@ -152,7 +153,7 @@ function Footer() {
               <ul className="footer-links">
                 {footerLinks.financial.map((link, index) => (
                   <li key={index}>
-                    <a href={`#${link.toLowerCase().replace(/\s+/g, '-')}`}>{link}</a>
+                    <Link to={link.path}>{link.name}</Link>
                   </li>
                 ))}
               </ul>
@@ -164,7 +165,7 @@ function Footer() {
               <ul className="footer-links">
                 {footerLinks.platform.map((link, index) => (
                   <li key={index}>
-                    <a href={`#${link.toLowerCase().replace(/\s+/g, '-')}`}>{link}</a>
+                    <Link to={link.path}>{link.name}</Link>
                   </li>
                 ))}
               </ul>

@@ -83,7 +83,7 @@ function Login() {
           </div>
           <div className="login-illustration">
             <div className="illustration-circle"></div>
-            <div className="illustration-icon">🔐</div>
+            <div className="illustration-icon"></div>
           </div>
           <p className="login-welcome">
             Secure access to your broker management system
@@ -135,7 +135,7 @@ function Login() {
               <div className="form-group">
                 <label htmlFor="email">Email Address</label>
                 <div className="input-wrapper">
-                  <span className="input-icon">📧</span>
+                  <span className="input-icon"></span>
                   <input
                     type="email"
                     id="email"
@@ -152,7 +152,7 @@ function Login() {
               <div className="form-group">
                 <label htmlFor="password">Password</label>
                 <div className="input-wrapper">
-                  <span className="input-icon">🔒</span>
+                  <span className="input-icon"></span>
                   <input
                     type={showPassword ? 'text' : 'password'}
                     id="password"

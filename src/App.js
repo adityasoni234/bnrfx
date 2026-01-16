@@ -3,6 +3,47 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 
 // Website Pages
 import Home from './pages/Website/Home';
+import Contact from './pages/Website/Contact';
+
+// Company Pages
+import WhyBNRFx from './pages/Website/Company/WhyBNRFx';
+import ContactUs from './pages/Website/Company/Contactus';
+import Awards from './pages/Website/Company/Awards';
+import Regulation from './pages/Website/Company/Regulation';
+import Career from './pages/Website/Company/Career';
+
+// Important Links Pages
+import TradingRewards from './pages/Website/ImportantLinks/Tradingrewards';
+import ExclusiveRewards from './pages/Website/ImportantLinks/Exclusiverewards';
+import Partnership from './pages/Website/ImportantLinks/Partnership';
+import DepositBonus from './pages/Website/ImportantLinks/Depositbonus';
+
+// Extra's Pages
+import SocialMedia from './pages/Website/Extras/Socialmedia';
+import MarginCalculator from './pages/Website/Extras/Margincalculator';
+
+// Accounts Pages
+import DemoAccount from './pages/Website/Accounts/Demoaccount';
+import ENCAccount from './pages/Website/Accounts/Encaccount';
+import StandardAccount from './pages/Website/Accounts/StandardAccount';
+import PremiumAccount from './pages/Website/Accounts/PremiumAccount';
+
+// Forex Pages
+import Trading from './pages/Website/Forex/Trading';
+import IslamicAccount from './pages/Website/Forex/Islamicaccount';
+import TradingConditions from './pages/Website/Forex/Tradingconditions';
+import AccountComparison from './pages/Website/Forex/Accountcomparison';
+
+// Financial Pages
+import SecurityOfFunds from './pages/Website/Financial/Securityoffunds';
+import DepositWithdrawal from './pages/Website/Financial/Depositwithdrawal';
+import NegativeBalanceProtection from './pages/Website/Financial/Negativebalanceprotection';
+
+// Platform Pages
+import AllTerminal from './pages/Website/Platform/Allterminal';
+import DownloadPC from './pages/Website/Platform/Downloadpc';
+import DownloadAndroid from './pages/Website/Platform/Downloadandroid';
+import DownloadApple from './pages/Website/Platform/Downloadapple';
 
 // Admin Pages
 import Login from './pages/Admin/Login';
@@ -45,7 +86,7 @@ import PaymentSettings from './pages/BrokerAdmin/PaymentSettings/PaymentSettings
 // Components
 import Sidebar from './pages/Admin/Sidebar';
 
-// Broker Protected Route Component (embedded)
+// Broker Protected Route Component
 function BrokerProtectedRoute({ children }) {
   const isBrokerAuthenticated = localStorage.getItem('isBrokerAuthenticated') === 'true';
   const brokerAdmin = localStorage.getItem('brokerAdmin');
@@ -62,17 +103,66 @@ function BrokerProtectedRoute({ children }) {
 function App() {
   return (
     <Routes>
-      {/* BROKER ADMIN LOGIN - Public Route */}
+      {/* ==================== WEBSITE ROUTES ==================== */}
+      
+      {/* Home Page */}
+      <Route path="/" element={<Home />} />
+      
+      {/* Contact Page */}
+      <Route path="/contact" element={<Contact />} />
+
+      {/* Company Routes */}
+      <Route path="/company/why-bnr-fx" element={<WhyBNRFx />} />
+      <Route path="/company/contact-us" element={<ContactUs />} />
+      <Route path="/company/awards" element={<Awards />} />
+      <Route path="/company/regulation" element={<Regulation />} />
+      <Route path="/company/career" element={<Career />} />
+
+      {/* Important Links Routes */}
+      <Route path="/important-links/trading-rewards" element={<TradingRewards />} />
+      <Route path="/important-links/exclusive-rewards" element={<ExclusiveRewards />} />
+      <Route path="/important-links/partnership" element={<Partnership />} />
+      <Route path="/important-links/deposit-bonus" element={<DepositBonus />} />
+
+      {/* Extra's Routes */}
+      <Route path="/extras/social-media" element={<SocialMedia />} />
+      <Route path="/extras/margin-calculator" element={<MarginCalculator />} />
+
+      {/* Accounts Routes */}
+      <Route path="/accounts/demo-account" element={<DemoAccount />} />
+      <Route path="/accounts/enc-account" element={<ENCAccount />} />
+      <Route path="/accounts/standard-account" element={<StandardAccount />} />
+      <Route path="/accounts/premium-account" element={<PremiumAccount />} />
+
+      {/* Forex Routes */}
+      <Route path="/forex/trading" element={<Trading />} />
+      <Route path="/forex/islamic-account" element={<IslamicAccount />} />
+      <Route path="/forex/trading-conditions" element={<TradingConditions />} />
+      <Route path="/forex/account-comparison" element={<AccountComparison />} />
+
+      {/* Financial Routes */}
+      <Route path="/financial/security-of-funds" element={<SecurityOfFunds />} />
+      <Route path="/financial/deposit-withdrawal" element={<DepositWithdrawal />} />
+      <Route path="/financial/negative-balance-protection" element={<NegativeBalanceProtection />} />
+
+      {/* Platform Routes */}
+      <Route path="/platform/all-terminal" element={<AllTerminal />} />
+      <Route path="/platform/download-pc" element={<DownloadPC />} />
+      <Route path="/platform/download-android" element={<DownloadAndroid />} />
+      <Route path="/platform/download-apple" element={<DownloadApple />} />
+
+      {/* ==================== AUTHENTICATION ROUTES ==================== */}
+      
+      {/* Broker Admin Login - Public Route */}
       <Route path="/broker-admin/login" element={<BrokerLogin />} />
 
-      {/* Website Home Page - Default Route */}
-      <Route path="/" element={<Home />} />
-
-      {/* Authentication Routes */}
+      {/* Client Authentication Routes */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/admin/login" element={<Login />} />
 
+      {/* ==================== ADMIN ROUTES ==================== */}
+      
       {/* Admin Routes with Sidebar Layout */}
       <Route path="/admin/*" element={
         <div className="admin-layout">
@@ -100,6 +190,8 @@ function App() {
         </div>
       } />
 
+      {/* ==================== BROKER ADMIN ROUTES ==================== */}
+      
       {/* Broker Admin Routes - PROTECTED */}
       <Route path="/broker-admin" element={
         <BrokerProtectedRoute>

@@ -1,0 +1,75 @@
+import React from 'react';
+
+const PremiumAccount = () => {
+  return (
+    <div className="premium-account">
+      <style>{`
+        .premium-account { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; background: #f8f9fa; }
+        .header { background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); color: #1a1a2e; padding: 100px 20px; text-align: center; }
+        .header h1 { font-size: 3.5rem; margin-bottom: 25px; font-weight: 800; }
+        .header .vip-badge { background: #1a1a2e; color: #FFD700; padding: 10px 30px; border-radius: 25px; font-weight: 700; display: inline-block; margin-bottom: 20px; }
+        .header p { font-size: 1.4rem; font-weight: 600; max-width: 900px; margin: 0 auto; line-height: 1.8; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 80px 20px; }
+        .intro { background: white; padding: 60px; margin-bottom: 50px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+        .intro h2 { color: #1a1a2e; font-size: 2.5rem; margin-bottom: 30px; font-weight: 700; }
+        .intro p { color: #555; font-size: 1.2rem; line-height: 2; margin-bottom: 20px; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 35px; margin: 60px 0; }
+        .feature-card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); border-top: 5px solid #FFD700; transition: all 0.3s ease; }
+        .feature-card:hover { transform: translateY(-8px); }
+        .feature-icon { font-size: 3.5rem; margin-bottom: 20px; }
+        .feature-card h3 { color: #1a1a2e; font-size: 1.5rem; margin-bottom: 15px; font-weight: 600; }
+        .feature-card p { color: #666; font-size: 1.05rem; line-height: 1.7; }
+        .specs { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 70px; border-radius: 16px; margin: 60px 0; color: white; }
+        .specs h2 { font-size: 2.5rem; margin-bottom: 40px; font-weight: 700; text-align: center; }
+        .specs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; }
+        .spec-item { background: rgba(255,215,0,0.1); padding: 30px; border-radius: 12px; text-align: center; border: 2px solid #FFD700; }
+        .spec-value { font-size: 2.5rem; font-weight: 800; margin-bottom: 10px; color: #FFD700; }
+        .cta { background: white; padding: 70px; text-align: center; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+        .cta-button { display: inline-block; padding: 20px 60px; background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); color: #1a1a2e; text-decoration: none; border-radius: 50px; font-size: 1.3rem; font-weight: 700; }
+        @media (max-width: 768px) { .features-grid { grid-template-columns: 1fr; } }
+      `}</style>
+      
+      <div className="header">
+        <div className="vip-badge">VIP ACCESS</div>
+        <h1>Premium Account</h1>
+        <p>Elite trading with dedicated support and enhanced benefits</p>
+      </div>
+      
+      <div className="container">
+        <div className="intro">
+          <h2>Exclusive Premium Trading Experience</h2>
+          <p>The Premium Account is designed for serious traders who demand the best. Enjoy tightest spreads, dedicated account management, priority support, and exclusive perks reserved for our most valued clients.</p>
+        </div>
+        
+        <div className="features-grid">
+          <div className="feature-card"><div className="feature-icon">👑</div><h3>Dedicated Manager</h3><p>Personal account manager available 24/7.</p></div>
+          <div className="feature-card"><div className="feature-icon">⚡</div><h3>Tightest Spreads</h3><p>Best available spreads from 0.5 pips.</p></div>
+          <div className="feature-card"><div className="feature-icon">💎</div><h3>VIP Benefits</h3><p>Exclusive bonuses and cashback rewards.</p></div>
+          <div className="feature-card"><div className="feature-icon">📊</div><h3>Premium Analysis</h3><p>Access to exclusive market research and signals.</p></div>
+          <div className="feature-card"><div className="feature-icon">🚀</div><h3>Priority Processing</h3><p>Faster withdrawals and priority support.</p></div>
+          <div className="feature-card"><div className="feature-icon">🎁</div><h3>Special Offers</h3><p>First access to new features and promotions.</p></div>
+        </div>
+        
+        <div className="specs">
+          <h2>Premium Account Specifications</h2>
+          <div className="specs-grid">
+            <div className="spec-item"><div className="spec-value">0.5</div><div>Spreads From (pips)</div></div>
+            <div className="spec-item"><div className="spec-value">$0</div><div>Commission</div></div>
+            <div className="spec-item"><div className="spec-value">$5,000</div><div>Minimum Deposit</div></div>
+            <div className="spec-item"><div className="spec-value">1:1000</div><div>Maximum Leverage</div></div>
+            <div className="spec-item"><div className="spec-value">0.01</div><div>Minimum Lot</div></div>
+            <div className="spec-item"><div className="spec-value">Unlimited</div><div>Maximum Lots</div></div>
+          </div>
+        </div>
+        
+        <div className="cta">
+          <h2>Upgrade to Premium</h2>
+          <p>Experience VIP treatment and exclusive trading benefits</p>
+          <a href="mailto:vip@bnrfx.com" className="cta-button">Contact VIP Team</a>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default PremiumAccount;

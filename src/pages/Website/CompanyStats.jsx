@@ -8,7 +8,7 @@ function CompanyStats({ onOpenModal }) {
       <section className="about-section">
         <div className="container-wide">
           <div className="about-badge">
-            <span className="badge-icon">📊</span>
+            <span className="badge-icon"></span>
             <span>About Us</span>
           </div>
           
