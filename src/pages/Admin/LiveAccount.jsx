@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { FiUserPlus, FiEye, FiEyeOff, FiCopy, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import '../../styles/Admin/LiveAccount.css';
-import { getCurrentUser, getUserMT5Accounts, createMT5Account } from '../../lib/supabase/helpers';
+import { getCurrentUser, getUserMT5Accounts } from '../../lib/supabase/helpers';
+import { supabase } from '../../lib/supabase/client';
+import { api } from '../../services/api';
 
 function LiveAccount() {
   const [showPassword, setShowPassword] = useState({});
@@ -10,6 +12,7 @@ function LiveAccount() {
   const [creating, setCreating] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [accounts, setAccounts] = useState([]);
+  const [groups, setGroups] = useState([]);
 
   const [formData, setFormData] = useState({
     accountGroup: 'LIVE PRO',
@@ -19,6 +22,10 @@ function LiveAccount() {
   useEffect(() => {
     fetchAccounts();
   }, []);
+
+  useEffect(() => {
+    console.log('Fetched MT5 Groups:', groups);
+  }, [groups]);
 
   const fetchAccounts = async () => {
     try {
@@ -35,6 +42,9 @@ function LiveAccount() {
 
       const mt5Accounts = await getUserMT5Accounts(user.user.id);
       setAccounts(mt5Accounts || []);
+
+      const groups = await api.getGroups();
+      setGroups(groups.data || []);
 
     } catch (error) {
       console.error('Error fetching accounts:', error);
@@ -62,14 +72,76 @@ function LiveAccount() {
     setCreating(true);
 
     try {
-      const newAccount = await createMT5Account(
-        currentUser.user.id,
-        formData.accountGroup,
-        formData.leverage
-      );
+      // Get user name and email from currentUser
+      const userName = currentUser.user?.user_metadata?.full_name || 
+                       currentUser.user?.email?.split('@')[0] || 
+                       'User';
+      
+      const userEmail = currentUser.user?.email || '';
+      debugger
+      // Call Node.js backend API
+      const result = await api.createAccount({
+        name: userName,
+        email: userEmail,
+        group: formData.accountGroup,
+        leverage: formData.leverage,
+        initialBalance: 0
+      });
 
-      if (newAccount) {
-        alert(`Account Created Successfully!\nLogin: ${newAccount.login_id}\nPassword: ${newAccount.password}\n\nPlease save these credentials!`);
+      if (result.success) {
+        const accountData = result.data;
+        
+        // Map MT5 group to Supabase enum value
+        let accountGroupEnum = 'LIVE PRO'; // default
+        if (accountData.group.includes('demo') || accountData.group.includes('DEMO')) {
+          accountGroupEnum = 'DEMO';
+        } else if (accountData.group.includes('STANDARD')) {
+          accountGroupEnum = 'LIVE STANDARD';
+        } else if (accountData.group.includes('PRO')) {
+          accountGroupEnum = 'LIVE PRO';
+        }
+        
+        console.log('Attempting to save to Supabase:', {
+          user_id: currentUser.user.id,
+          login_id: accountData.login.toString(),
+          group: accountData.group,
+          mapped_enum: accountGroupEnum
+        });
+        
+        // Save to Supabase mt5_accounts table
+        const { data: insertedData, error: saveError } = await supabase
+          .from('mt5_accounts')
+          .insert([
+            {
+              user_id: currentUser.user.id,
+              login_id: accountData.login.toString(),
+              password: accountData.trading_password,
+              account_group: accountData.group,
+              leverage: accountData.leverage,
+              balance: 10000,
+              equity: 10000,
+              margin: 0,
+              free_margin: 10000,
+              margin_level: 0,
+            
+            }
+          ])
+          .select();
+
+        if (saveError) {
+          console.error('Error saving to Supabase:', saveError);
+          alert(`Warning: Account created in MT5 but failed to save to database: ${saveError.message}`);
+        } else {
+          console.log('Successfully saved to Supabase:', insertedData);
+        }
+        
+        alert(
+          `Account Created Successfully!\n` +
+          `Login: ${accountData.login}\n` +
+          `Trading Password: ${accountData.trading_password}\n` +
+          `Investor Password: ${accountData.investor_password}\n\n` +
+          `Please save these credentials!`
+        );
         
         // Refresh accounts list
         await fetchAccounts();
@@ -84,7 +156,7 @@ function LiveAccount() {
       }
     } catch (error) {
       console.error('Error creating account:', error);
-      alert('Failed to create account. Please try again.');
+      alert(`Failed to create account: ${error.message || 'Please try again.'}`);
     } finally {
       setCreating(false);
     }
@@ -162,6 +234,14 @@ function LiveAccount() {
 
   const currentAccount = accounts[currentAccountIndex];
 
+  const removeOneSlash = (str) => {
+    return str.replace(/\\\\/g, '\\');
+  }
+  const getLastPartAfterSlash = (str) => {
+    const parts = str.split('\\');
+    return parts[parts.length - 1];
+  }
+
   return (
     <div className="live-account-page">
       <div className="live-account-container">
@@ -186,9 +266,14 @@ function LiveAccount() {
                 onChange={handleChange}
                 required
               >
-                <option value="LIVE PRO">LIVE PRO</option>
+                {groups.map((group) => (
+                  <option key={group.name} value={removeOneSlash(group.name)}>
+                    {getLastPartAfterSlash(group.name)}
+                  </option>
+                ))}
+                {/* <option value="LIVE PRO">LIVE PRO</option>
                 <option value="LIVE STANDARD">LIVE STANDARD</option>
-                <option value="DEMO">DEMO</option>
+                <option value="IND\3001\COMEX\7001\10 USD-demo10lot">DEMO</option> */}
               </select>
             </div>
 
@@ -283,6 +368,18 @@ function LiveAccount() {
                   </div>
 
                   <div className="detail-row">
+                    <span className="detail-label">Account Status</span>
+                    <span className="detail-value" style={{ color: currentAccount.is_active ? '#10b981' : '#ef4444' }}>
+                      {currentAccount.is_active ? 'Enabled' : 'Disabled'}
+                    </span>
+                  </div>
+
+                  <div className="detail-row">
+                    <span className="detail-label">Group Name</span>
+                    <span className="detail-value">{getLastPartAfterSlash(currentAccount.account_group)}</span>
+                  </div>
+
+                  <div className="detail-row">
                     <span className="detail-label">Account Type</span>
                     <span className="detail-value">{currentAccount.account_type}</span>
                   </div>
@@ -305,6 +402,16 @@ function LiveAccount() {
                   <div className="detail-row">
                     <span className="detail-label">Equity</span>
                     <span className="detail-value">₹{parseFloat(currentAccount.equity || 0).toFixed(2)}</span>
+                  </div>
+
+                  <div className="detail-row">
+                    <span className="detail-label">Margin</span>
+                    <span className="detail-value">₹{parseFloat(currentAccount.margin || 0).toFixed(2)}</span>
+                  </div>
+
+                  <div className="detail-row">
+                    <span className="detail-label">Free Margin</span>
+                    <span className="detail-value">₹{parseFloat(currentAccount.free_margin || 0).toFixed(2)}</span>
                   </div>
                 </div>
               </div>

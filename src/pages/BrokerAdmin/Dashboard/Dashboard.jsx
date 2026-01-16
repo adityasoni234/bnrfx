@@ -31,32 +31,38 @@ export default function Dashboard() {
       const dashboardStats = await getDashboardStats();
       
       // Get recent deposits
-      const { data: recentDepositsData } = await supabase
+      const { data: recentDepositsData, error: depositsError } = await supabase
         .from('deposits')
         .select(`
           id,
           amount,
           created_at,
-          profiles(first_name, last_name)
+          user_id,
+          profiles!deposits_user_id_fkey(first_name, last_name)
         `)
         .eq('status', 'approved')
-        .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
+        // .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
         .order('created_at', { ascending: false })
         .limit(3);
 
+      if (depositsError) console.error('Deposits query error:', depositsError);
+
       // Get recent withdrawals
-      const { data: recentWithdrawalsData } = await supabase
+      const { data: recentWithdrawalsData, error: withdrawalsError } = await supabase
         .from('withdrawals')
         .select(`
           id,
           amount,
           created_at,
-          profiles(first_name, last_name)
+          user_id,
+          profiles!withdrawals_user_id_fkey(first_name, last_name)
         `)
         .eq('status', 'approved')
-        .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
+        // .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
         .order('created_at', { ascending: false })
         .limit(3);
+
+      if (withdrawalsError) console.error('Withdrawals query error:', withdrawalsError);
 
       const recentDeposits = (recentDepositsData || []).map(d => ({
         id: d.id,

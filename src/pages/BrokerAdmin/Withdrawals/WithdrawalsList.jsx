@@ -11,6 +11,7 @@ import {
 } from 'react-icons/md';
 import './WithdrawalsList.css';
 import { getAllWithdrawals, updateWithdrawalStatus } from '../../../lib/supabase/helpers';
+import { api } from '../../../services/api';
 
 export default function WithdrawalsList() {
   const [withdrawals, setWithdrawals] = useState([]);
@@ -67,13 +68,43 @@ export default function WithdrawalsList() {
       return;
     }
 
+    
     const utr = prompt('Enter UTR/Transaction Reference Number:');
     if (utr) {
       try {
-        await updateWithdrawalStatus(withdrawalId, 'approved', 'Super Admin');
+        console.log('💰 Processing withdrawal:', { 
+          mt5Login: withdrawal.mt5Login, 
+          amount: withdrawal.amount 
+        });
+
+        // Step 1: Withdraw from MT5 account if mt5_login exists
+        if (withdrawal.mt5Login && withdrawal.mt5Login !== 'N/A') {
+          console.log('📞 Calling MT5 withdraw API...');
+          try {
+            const mt5Result = await api.withdraw({
+              login: withdrawal.mt5Login,
+              amount: withdrawal.amount,
+              comment: `Withdrawal approval - UTR: ${utr}`
+            });
+            
+            if (!mt5Result.success) {
+              alert(`Failed to withdraw from MT5 account: ${mt5Result.message || 'Unknown error'}`);
+              return;
+            }
+            
+            // console.log('✅ MT5 withdrawal successful:', mt5Result);
+          } catch (mt5Error) {
+            console.error('❌ MT5 withdrawal failed:', mt5Error);
+            alert(`Failed to withdraw from MT5 account: ${mt5Error.message || 'Unknown error'}`);
+            return;
+          }
+        }
+
+        // Step 2: Update withdrawal status in Supabase
+        await updateWithdrawalStatus(withdrawalId, 'approved', null);
         await fetchWithdrawals();
         setShowModal(false);
-        alert('Withdrawal approved! Amount debited from wallet.');
+        alert('Withdrawal approved! Amount debited from account.');
       } catch (error) {
         console.error('Error approving withdrawal:', error);
         alert('Failed to approve withdrawal');
@@ -85,7 +116,7 @@ export default function WithdrawalsList() {
     const reason = prompt('Enter rejection reason:');
     if (reason) {
       try {
-        await updateWithdrawalStatus(withdrawalId, 'rejected', 'Super Admin', reason);
+        await updateWithdrawalStatus(withdrawalId, 'rejected', null, reason);
         await fetchWithdrawals();
         setShowModal(false);
         alert('Withdrawal rejected!');

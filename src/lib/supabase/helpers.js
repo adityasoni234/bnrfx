@@ -8,7 +8,7 @@ const SITE_URL = process.env.REACT_APP_SITE_URL || 'bnrfx.com'
 // AUTHENTICATION
 // ============================================
 
-export async function registerUser({ email, password, firstName, lastName, phone, referralCode }) {
+export async function registerUser({ email, password, firstName, lastName, phone, referralCode , reffered_by }) {
   try {
     console.log('🚀 Starting registration for:', email)
     
@@ -53,6 +53,22 @@ export async function registerUser({ email, password, firstName, lastName, phone
     }
 
     console.log('✅ Profile and wallet created successfully!')
+
+    // Update profile with referred_by if provided
+    if (reffered_by) {
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ referred_by: reffered_by })
+        .eq('id', authData.user.id)
+
+      if (updateError) {
+        console.error('⚠️ Warning: Failed to update referred_by:', updateError)
+        // Don't throw error, just log warning
+      } else {
+        console.log('✅ Referral link updated successfully!')
+      }
+    }
+
     console.log('🎉 Registration completed!')
 
     return { 
@@ -1445,5 +1461,245 @@ export async function updateClientStatus(userId, status) {
   } catch (error) {
     console.error('Update client status error:', error)
     return null
+  }
+}
+
+// ============================================
+// MANAGER FUNCTIONS (Separate managers table)
+// ============================================
+
+export async function getAllManagers(brokerId) {
+  try {
+    console.log('🔍 Fetching all managers for broker:', brokerId)
+    const { data: { session } } = await supabase.auth.getSession()
+    if (!session) return null
+    
+    const { data, error } = await supabase
+      .from('managers')
+      .select('*')
+      .eq('broker_id', session.user.id)
+      .order('created_at', { ascending: false })
+
+    if (error) throw error
+    console.log('✅ Managers fetched:', data)
+    return data || []
+  } catch (error) {
+    console.error('Get managers error:', error)
+    return []
+  }
+}
+
+export async function getManagerById(managerId) {
+  try {
+    const { data, error } = await supabase
+      .from('managers')
+      .select('*')
+      .eq('id', managerId)
+      .single()
+
+    if (error) throw error
+    return data
+  } catch (error) {
+    console.error('Get manager error:', error)
+    return null
+  }
+}
+
+export async function getManagerByProfileId(managerId) {
+  try {
+    const { data, error } = await supabase
+      .from('managers')
+      .select('*')
+      .eq('user_id', managerId)
+      .single()
+
+    if (error) throw error
+    return data
+  } catch (error) {
+    console.error('Get manager error:', error)
+    return null
+  }
+}
+
+export async function createManager({ brokerId, name, email, mt5_server, mt5_manager_id, mt5_password, password }) {
+  try {
+    console.log('➕ Creating manager for broker:', brokerId)
+    
+    // Step 1: Create Supabase Auth account
+    console.log('🔐 Creating auth account for manager:', email)
+    const { data: authData, error: authError } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          first_name: name,
+          role: 'manager'
+        }
+      }
+    })
+
+    if (authError) {
+      console.error('❌ Auth creation error:', authError)
+      throw authError
+    }
+
+    if (!authData.user) {
+      throw new Error('No user data returned from signup')
+    }
+
+    console.log('✅ Auth user created:', authData.user.id)
+
+    // Step 2: Create profile for manager
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    const { data: profileResult, error: profileError } = await supabase.rpc('create_user_profile', {
+      p_user_id: authData.user.id,
+      p_email: email,
+      p_first_name: name,
+      p_last_name: '',
+      p_phone: ''
+    })
+
+    if (profileError) {
+      console.error('❌ Profile creation error:', profileError)
+      throw new Error(`Profile creation failed: ${profileError.message}`)
+    }
+
+    console.log('✅ Manager profile created')
+
+    // Step 3: Update profile role to 'manager'
+    const { error: roleError } = await supabase
+      .from('profiles')
+      .update({ role: 'manager' })
+      .eq('id', authData.user.id)
+
+    if (roleError) {
+      console.error('❌ Role update error:', roleError)
+      throw roleError
+    }
+
+    // Step 4: Create manager record
+    const { data: managerData, error: managerError } = await supabase
+      .from('managers')
+      .insert([
+        {
+          broker_id: brokerId,
+          user_id: authData.user.id,
+          name,
+          email,
+          mt5_server,
+          mt5_manager_id,
+          mt5_password,
+          manager_status: 'active',
+          mt5_last_connected_at: null
+        }
+      ])
+      .select()
+      .single()
+
+    if (managerError) throw managerError
+    console.log('✅ Manager created:', managerData)
+    return { success: true, manager: managerData }
+  } catch (error) {
+    console.error('Create manager error:', error)
+    return { success: false, error: error.message }
+  }
+}
+
+export async function updateManagerMT5Credentials(managerId, { mt5_server, mt5_manager_id, mt5_password }) {
+  try {
+    console.log('✏️ Updating manager MT5 credentials:', managerId)
+    
+    const { data, error } = await supabase
+      .from('managers')
+      .update({
+        mt5_server,
+        mt5_manager_id,
+        mt5_password,
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', managerId)
+      .select()
+      .single()
+
+    if (error) throw error
+    console.log('✅ Manager credentials updated:', data)
+    return { success: true, manager: data }
+  } catch (error) {
+    console.error('Update manager credentials error:', error)
+    return { success: false, error: error.message }
+  }
+}
+
+export async function updateManagerStatus(managerId, status) {
+  try {
+    const { data, error } = await supabase
+      .from('managers')
+      .update({ 
+        manager_status: status,
+        mt5_last_connected_at: status === 'active' ? new Date().toISOString() : null,
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', managerId)
+      .select()
+      .single()
+
+    if (error) throw error
+    return { success: true, manager: data }
+  } catch (error) {
+    console.error('Update manager status error:', error)
+    return { success: false, error: error.message }
+  }
+}
+
+export async function deleteManager(managerId) {
+  try {
+    console.log('🗑️ Deleting manager:', managerId)
+    
+    const { error } = await supabase
+      .from('managers')
+      .delete()
+      .eq('id', managerId)
+
+    if (error) throw error
+    console.log('✅ Manager deleted')
+    return { success: true }
+  } catch (error) {
+    console.error('Delete manager error:', error)
+    return { success: false, error: error.message }
+  }
+}
+
+export async function testManagerConnection(managerId) {
+  try {
+    console.log('🔗 Testing manager connection:', managerId)
+    
+    const manager = await getManagerById(managerId)
+    if (!manager) {
+      return { success: false, error: 'Manager not found' }
+    }
+
+    // Simulate connection test (in real scenario, this would call MT5 bridge)
+    await new Promise(resolve => setTimeout(resolve, 1500))
+
+    // Update last connected time
+    const { data, error } = await supabase
+      .from('managers')
+      .update({
+        mt5_last_connected_at: new Date().toISOString()
+      })
+      .eq('id', managerId)
+      .select()
+      .single()
+
+    if (error) throw error
+
+    return { 
+      success: true, 
+      message: 'Connection successful',
+      manager: data
+    }
+  } catch (error) {
+    console.error('Test manager connection error:', error)
+    return { success: false, error: error.message }
   }
 }

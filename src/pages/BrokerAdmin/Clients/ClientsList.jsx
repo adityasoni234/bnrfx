@@ -25,17 +25,19 @@ export default function ClientsList() {
     try {
       setLoading(true);
       const data = await getAllClientsForBroker();
-      
+      console.log('Fetched clients:', data);
       const formattedClients = data.map(client => ({
         id: client.id,
         name: `${client.first_name} ${client.last_name}`,
-        email: client.email,
-        phone: client.phone || 'N/A',
+        email: client.email  || 'NOT_SUBMITTED',
+        phone: client.phone || 'NOT_SUBMITTED',
         role: client.role.toUpperCase(),
         status: client.status?.toUpperCase() || 'ACTIVE',
         kycStatus: client.kyc_status?.toUpperCase() || 'PENDING',
         balance: client.wallets?.[0]?.total_balance || 0,
-        mt5Login: client.mt5_accounts?.[0]?.login_id || 'N/A',
+        mt5Login: client.mt5_accounts?.length > 0 
+          ? client.mt5_accounts
+          : 'NOT_SUBMITTED',
         createdAt: new Date(client.created_at)
       }));
 
@@ -177,8 +179,12 @@ export default function ClientsList() {
                     </div>
                   </td>
                   <td>{client.phone}</td>
-                  <td>
-                    <span className="mt5-badge">{client.mt5Login}</span>
+                  <td style={{ maxWidth: '200px', wordBreak: 'break-word' }}>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
+                      {client.mt5Login !== "NOT_SUBMITTED" && client.mt5Login.length > 0 ? client.mt5Login.map(login => (
+                        <span key={login.id} className="mt5-badge">{login.login_id}</span>
+                      )) : <span className="mt5-badge">NOT_SUBMITTED</span>}
+                    </div>
                   </td>
                   <td>
                     <span className="balance">₹{client.balance.toLocaleString()}</span>

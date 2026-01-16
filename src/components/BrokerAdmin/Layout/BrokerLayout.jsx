@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
 import { 
   MdDashboard, 
@@ -22,18 +22,34 @@ import {
   MdShowChart,
   MdCreditCard
 } from 'react-icons/md';
+import { getCurrentUser } from '../../../lib/supabase/helpers';
 import './BrokerLayout.css';
 
 export default function BrokerLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [currentUser, setCurrentUser] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
+
+  useEffect(() => {
+    const loadUser = async () => {
+      try {
+        const user = await getCurrentUser();
+        if (user) {
+          setCurrentUser(user);
+        }
+      } catch (error) {
+        console.error('Failed to load user:', error);
+      }
+    };
+    loadUser();
+  }, []);
 
   const menuItems = [
     { icon: MdDashboard, label: 'Dashboard', path: '/broker-admin/dashboard' },
     { icon: MdPeople, label: 'Clients', path: '/broker-admin/clients' },
     { icon: MdAccountBalance, label: 'IB Management', path: '/broker-admin/ib-management' },
-    { icon: MdAttachMoney, label: 'Wallets', path: '/broker-admin/wallets' },
+    // { icon: MdAttachMoney, label: 'Wallets', path: '/broker-admin/wallets' },
     { icon: MdTrendingDown, label: 'Deposits', path: '/broker-admin/deposits' },
     { icon: MdTrendingUp, label: 'Withdrawals', path: '/broker-admin/withdrawals' },
     { icon: MdVerifiedUser, label: 'KYC Queue', path: '/broker-admin/kyc' },
@@ -60,7 +76,7 @@ export default function BrokerLayout() {
         {/* Logo */}
         <div className="sidebar-header">
           <div className="sidebar-logo-container">
-            <img src="/logo.jpeg" alt="Logo" className={sidebarOpen ? "sidebar-logo-img" : "sidebar-logo-img-mini"} />
+            <img src="/logo.png" alt="Logo" className={sidebarOpen ? "sidebar-logo-img" : "sidebar-logo-img-mini"} />
           </div>
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}

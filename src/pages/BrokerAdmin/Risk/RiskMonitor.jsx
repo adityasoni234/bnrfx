@@ -7,6 +7,8 @@ import {
   MdAccountBalance
 } from 'react-icons/md';
 import './RiskMonitor.css';
+import { api } from '../../../services/api';
+import { getCurrentUser, getUserMT5Accounts } from '../../../lib/supabase/helpers';
 
 export default function RiskMonitor() {
   const [loading, setLoading] = useState(true);
@@ -88,10 +90,103 @@ export default function RiskMonitor() {
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      setRiskData(dummyData);
-      setLoading(false);
-    }, 500);
+    const fetchRiskData = async () => {
+      try {
+        const user = await getCurrentUser();
+        console.log('Current user:', user);
+        const mt5Accounts = await getUserMT5Accounts(user.user.id);
+         if (mt5Accounts && mt5Accounts.length > 0) {
+          // Transform data for each account
+          const allHighRiskAccounts = [];
+          const allSymbolExposure = {};
+          const allMarginAlerts = [];
+          
+          // Fetch risk data for each account with 2 second delay
+          for (let i = 0; i < mt5Accounts.length; i++) {
+            const account = mt5Accounts[i];
+            
+            try {
+              console.log(`Fetching risk for account ${i + 1}/${mt5Accounts.length}: ${account.login_id}`);
+              const response = await api.getRisk(account.login_id);
+              console.log(`Risk data for ${account.login_id}:`, response);
+              
+              if (response && response.success && response.data) {
+                const data = response.data;
+                
+                // Add to high risk accounts
+                allHighRiskAccounts.push({
+                  id: data.login?.toString() || account.id,
+                  userName: account.name || 'MT5 Account',
+                  mt5Login: data.login?.toString() || account.login_id,
+                  balance: data.balance || 0,
+                  equity: data.equity || 0,
+                  margin: data.margin || 0,
+                  freeMargin: data.free_margin || 0,
+                  marginLevel: data.margin_level || 0,
+                  openPositions: data.open_positions || 0,
+                  totalLots: data.total_lots || 0,
+                  riskLevel: data.margin_level < 150 ? 'HIGH' : data.margin_level < 300 ? 'MEDIUM' : 'LOW'
+                });
+                
+                // Aggregate symbol exposure
+                if (data.exposure_by_symbol) {
+                  Object.entries(data.exposure_by_symbol).forEach(([symbol, exposure]) => {
+                    if (!allSymbolExposure[symbol]) {
+                      allSymbolExposure[symbol] = { total: 0, buy: 0, sell: 0, value: 0 };
+                    }
+                    allSymbolExposure[symbol].total += exposure.total || 0;
+                    allSymbolExposure[symbol].buy += exposure.buy || 0;
+                    allSymbolExposure[symbol].sell += exposure.sell || 0;
+                    allSymbolExposure[symbol].value += exposure.value || 0;
+                  });
+                }
+                
+                // Add margin alerts
+                if (data.margin_level > 0 && data.margin_level < data.margin_call_level) {
+                  allMarginAlerts.push({
+                    id: account.id,
+                    userName: account.name || 'MT5 Account',
+                    mt5Login: data.login?.toString() || account.login_id,
+                    marginLevel: data.margin_level || 0,
+                    equity: data.equity || 0,
+                    margin: data.margin || 0,
+                    alertType: data.margin_level < data.stop_out_level ? 'STOP_OUT_WARNING' : 'MARGIN_CALL'
+                  });
+                }
+              }
+            } catch (error) {
+              console.error(`Error fetching risk for ${account.login_id}:`, error);
+            }
+            
+            // Wait 2 seconds before next call (except for the last one)
+            if (i < mt5Accounts.length - 1) {
+              await new Promise(resolve => setTimeout(resolve, 2000));
+            }
+          }
+          
+          // Set all data at the end
+          setRiskData({
+            highRiskAccounts: allHighRiskAccounts,
+            symbolExposure: Object.entries(allSymbolExposure).map(([symbol, exposure]) => ({
+              symbol,
+              totalLots: exposure.total,
+              buyLots: exposure.buy,
+              sellLots: exposure.sell,
+              netLots: exposure.buy - exposure.sell,
+              exposure: exposure.value
+            })),
+            marginAlerts: allMarginAlerts
+          });
+         }
+      
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching risk data:', error);
+        setRiskData(dummyData);
+        setLoading(false);
+      }
+    };
+    fetchRiskData();
   }, []);
 
   const getRiskColor = (level) => {

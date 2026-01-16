@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { FiArrowLeft } from 'react-icons/fi';
 import '../../styles/Admin/Login.css';
-import { loginUser } from '../../lib/supabase/helpers';
+import { loginUser, getManagerById, getManagerByProfileId } from '../../lib/supabase/helpers';
+import { api } from '../../services/api';
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -42,9 +43,40 @@ function Login() {
         
         alert(`✅ Welcome back, ${result.profile.first_name || 'User'}!`);
         
+        
         // Redirect based on role
         if (result.profile.role === 'broker_admin' || result.profile.role === 'super_admin') {
           window.location.href = '/broker-admin/dashboard';
+        } else if(result.profile.role === 'manager'){
+          try {
+            console.log('🔍 Manager detected, fetching manager data...');
+            console.log('📡 User profile:', result.profile);
+            const managerData = await getManagerByProfileId(result.profile.id);
+            
+            if (managerData) {
+              console.log('📡 Manager data:', managerData);
+              
+              // Call sessionLogin API with manager's MT5 credentials
+              const sessionResult = await api.sessionLogin({
+                mt5_server: managerData.mt5_server,
+                mt5_manager: managerData.mt5_manager_id,
+                mt5_password: managerData.mt5_password
+              });
+              
+              console.log('✅ Session login successful:', sessionResult);
+              
+              // Store manager data for the session
+              localStorage.setItem('managerData', JSON.stringify(managerData));
+              
+              window.location.href = '/admin/dashboard';
+            } else {
+              console.warn('⚠️ Manager data not found');
+              setError('❌ Manager configuration not found');
+            }
+          } catch (sessionError) {
+            console.error('❌ Session login error:', sessionError);
+            setError('❌ Failed to connect to MT5. Please contact support.');
+          }
         } else {
           window.location.href = '/admin/dashboard';
         }

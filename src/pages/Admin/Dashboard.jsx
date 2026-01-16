@@ -17,12 +17,15 @@ import {
   getUserWithdrawals 
 } from '../../lib/supabase/helpers';
 import { supabase } from '../../lib/supabase/client';
+import { api } from '../../services/api';
 
 function Dashboard() {
   const [activeTab, setActiveTab] = useState('live');
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState(null);
   const [walletData, setWalletData] = useState(null);
+  const [mt5Accounts, setMt5Accounts] = useState([]);
+  const [selectedAccountIndex, setSelectedAccountIndex] = useState(0);
   const [mt5Account, setMt5Account] = useState(null);
   const [mt5Positions, setMt5Positions] = useState([]);
   const [stats, setStats] = useState({
@@ -56,10 +59,51 @@ function Dashboard() {
       const wallet = await getUserWallet(currentUser.user.id);
       setWalletData(wallet);
 
-      // Get MT5 accounts
+    
       const mt5Accounts = await getUserMT5Accounts(currentUser.user.id);
       if (mt5Accounts && mt5Accounts.length > 0) {
-        setMt5Account(mt5Accounts[0]);
+        setMt5Accounts(mt5Accounts);
+        // Get MT5 accounts
+        try {
+          const usermt5Account = mt5Accounts[0];
+          console.log('💡 Found existing MT5 account:', usermt5Account);
+          
+          const mt5Result = await api.getAccount(usermt5Account.login_id);
+          
+          if (mt5Result.success && mt5Result.data) {
+            // Merge database account with live MT5 data
+            setMt5Account({
+              ...usermt5Account,
+              balance: mt5Result.data.balance,
+              equity: mt5Result.data.equity,
+              margin: mt5Result.data.margin,
+              free_margin: mt5Result.data.margin_free,
+              margin_level: mt5Result.data.margin_level,
+              leverage: mt5Result.data.leverage,
+              credit: mt5Result.data.credit || 0
+            });
+            console.log('✅ MT5 account data loaded:', mt5Result);
+          } else {
+            console.warn('⚠️ MT5 API returned no data, using database values');
+            setMt5Account(usermt5Account);
+          }
+
+          // Fetch positions after 2 seconds
+          setTimeout(async () => {
+            try {
+              const positions = await api.getPositions(usermt5Account.login_id);
+              console.log('✅ Fetched MT5 positions:', positions);
+              setMt5Positions(positions.data.positions || []);
+            } catch (posError) {
+              console.error('❌ Failed to fetch positions:', posError);
+            }
+          }, 2000);
+          
+        } catch (mt5Error) {
+          console.error('❌ Failed to fetch MT5 data:', mt5Error);
+          // Fallback to database account
+          setMt5Account(mt5Accounts[0]);
+        }
       }
 
       // Get deposits and withdrawals for stats
@@ -126,6 +170,47 @@ function Dashboard() {
     alert('Copied to clipboard!');
   };
 
+  const handleAccountChange = async (e) => {
+    const index = parseInt(e.target.value);
+    setSelectedAccountIndex(index);
+    setLoading(true);
+    const selectedAccount = mt5Accounts[index];
+    
+    if (selectedAccount) {
+      try {
+        console.log('📊 Fetching data for account:', selectedAccount.login_id);
+        const mt5Result = await api.getAccount(selectedAccount.login_id);
+        
+        if (mt5Result.success && mt5Result.data) {
+          setMt5Account({
+            ...selectedAccount,
+            balance: mt5Result.data.balance,
+            equity: mt5Result.data.equity,
+            margin: mt5Result.data.margin,
+            free_margin: mt5Result.data.margin_free,
+            margin_level: mt5Result.data.margin_level,
+            leverage: mt5Result.data.leverage,
+            credit: mt5Result.data.credit || 0
+          });
+        } else {
+          setMt5Account(selectedAccount);
+        }
+
+        // Fetch positions
+        const positions = await api.getPositions(selectedAccount.login_id);
+        console.log('✅ Fetched MT5 positions:', positions);
+        setMt5Positions(positions.data?.positions || []);
+      } catch (error) {
+        console.error('❌ Failed to fetch account data:', error);
+        setMt5Account(selectedAccount);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      setLoading(false);
+    }
+  };
+
   const handleVerifyAccount = () => {
     window.location.href = '/admin/profile?tab=kyc';
   };
@@ -181,8 +266,8 @@ function Dashboard() {
     { label: 'Total Withdraw', value: `₹${stats.totalWithdraw.toFixed(2)}`, color: 'red' },
     { label: 'Referral Income', value: `₹${stats.referralIncome.toFixed(2)}`, color: 'blue' },
     { label: 'Referral Payout', value: `₹${stats.referralPayout.toFixed(2)}`, color: 'orange' },
-    { label: 'Trading Deposit', value: `₹${stats.tradingDeposit.toFixed(2)}`, color: 'green' },
-    { label: 'Trading Withdraw', value: `₹${stats.tradingWithdraw.toFixed(2)}`, color: 'red' }
+    // { label: 'Trading Deposit', value: `₹${stats.tradingDeposit.toFixed(2)}`, color: 'green' },
+    // { label: 'Trading Withdraw', value: `₹${stats.tradingWithdraw.toFixed(2)}`, color: 'red' }
   ];
 
   const accountDetails = mt5Account ? {
@@ -208,6 +293,15 @@ function Dashboard() {
         <button className="menu-toggle"><FiMenu /></button>
         
         <div className="topbar-right">
+          <div className='select-mt5-acc form-group' style={{marginBottom:"0"}}>
+            <select value={selectedAccountIndex} onChange={handleAccountChange}>
+              {mt5Accounts.map((account, index) => (
+                <option key={index} value={index}>
+                  {account.login_id} - Account {index + 1}
+                </option>
+              ))}
+            </select>
+          </div>
           <div className="balance-display">
             <span className="balance-label">BALANCE</span>
             <span className="balance-amount">
@@ -277,16 +371,16 @@ function Dashboard() {
                 gap: '15px' 
               }}>
                 <div>
-                  <strong>Balance:</strong> ₹{parseFloat(mt5Account.balance || 0).toFixed(2)}
+                  <strong>Balance:</strong> {parseFloat(mt5Account.balance || 0) < 0 ? '-' : ''}₹{Math.abs(parseFloat(mt5Account.balance || 0)).toFixed(2)}
                 </div>
                 <div>
-                  <strong>Equity:</strong> ₹{parseFloat(mt5Account.equity || 0).toFixed(2)}
+                  <strong>Equity:</strong> {parseFloat(mt5Account.equity || 0) < 0 ? '-' : ''}₹{Math.abs(parseFloat(mt5Account.equity || 0)).toFixed(2)}
                 </div>
                 <div>
-                  <strong>Margin:</strong> ₹{parseFloat(mt5Account.margin || 0).toFixed(2)}
+                  <strong>Margin:</strong> {parseFloat(mt5Account.margin || 0) < 0 ? '-' : ''}₹{Math.abs(parseFloat(mt5Account.margin || 0)).toFixed(2)}
                 </div>
                 <div>
-                  <strong>Free Margin:</strong> ₹{parseFloat(mt5Account.free_margin || 0).toFixed(2)}
+                  <strong>Free Margin:</strong> {parseFloat(mt5Account.free_margin || 0) < 0 ? '-' : ''}₹{Math.abs(parseFloat(mt5Account.free_margin || 0)).toFixed(2)}
                 </div>
                 <div>
                   <strong>Margin Level:</strong> {parseFloat(mt5Account.margin_level || 0).toFixed(2)}%
@@ -336,22 +430,22 @@ function Dashboard() {
                 <div className="detail-row">
                   <div className="detail-item">
                     <div className="detail-label">Balance</div>
-                    <div className="detail-value">{accountDetails.balance}</div>
+                    <div className="detail-value">{mt5Account?.balance}</div>
                   </div>
                   <div className="detail-item">
                     <div className="detail-label">Credit</div>
-                    <div className="detail-value">{accountDetails.credit}</div>
+                    <div className="detail-value">{mt5Account?.credit}</div>
                   </div>
                 </div>
 
                 <div className="detail-row">
                   <div className="detail-item">
                     <div className="detail-label">Equity</div>
-                    <div className="detail-value">{accountDetails.equity}</div>
+                    <div className="detail-value">{mt5Account?.equity}</div>
                   </div>
                   <div className="detail-item">
                     <div className="detail-label">Total Deposit</div>
-                    <div className="detail-value">{accountDetails.totalDeposit}</div>
+                    <div className="detail-value">{accountDetails?.totalDeposit}</div>
                   </div>
                 </div>
 
@@ -379,14 +473,14 @@ function Dashboard() {
                   <tbody>
                     {mt5Positions.length > 0 ? (
                       mt5Positions.map((pos) => (
-                        <tr key={pos.id}>
-                          <td>{pos.ticket_number}</td>
+                        <tr key={pos?.id}>
+                          <td>{pos.ticket}</td>
                           <td>{pos.symbol}</td>
-                          <td>{pos.position_type}</td>
+                          <td>{pos.type}</td>
                           <td>{pos.volume}</td>
-                          <td>{pos.current_price}</td>
+                          <td>{pos.price_open}</td>
                           <td style={{ color: pos.profit >= 0 ? 'green' : 'red' }}>
-                            ₹{parseFloat(pos.profit || 0).toFixed(2)}
+                          ₹{parseFloat(pos.profit || 0).toFixed(2)}
                           </td>
                         </tr>
                       ))

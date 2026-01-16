@@ -1,0 +1,29 @@
+{
+  "name": "stockvala-server",
+  "version": "1.0.0",
+  "description": "StockVala Backend API",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon --inspect src/server.js",
+    "seed": "node seed.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.89.0",
+    "axios": "^1.13.2",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.21.2",
+    "express-validator": "^7.3.1",
+    "https-agent": "^1.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.1",
+    "multer": "^2.0.2",
+    "node-fetch": "^3.3.2",
+    "ws": "^8.18.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}

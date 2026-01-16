@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FiArrowLeft } from 'react-icons/fi';
 import '../../styles/Admin/Login.css';
 import { registerUser } from '../../lib/supabase/helpers';
+import { supabase } from '../../lib/supabase/client';
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -45,14 +46,22 @@ function Register() {
       return;
     }
 
+
     try {
+           const { data: profile } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('referral_code', formData.referralCode)
+            .single()
+
       const result = await registerUser({
         email: formData.email,
         password: formData.password,
         firstName: formData.firstName,
         lastName: formData.lastName,
         phone: formData.phone,
-        referralCode: formData.referralCode || null
+        referralCode: formData.referralCode || null,
+        reffered_by: profile ? profile.id : null
       });
 
       if (result.success) {

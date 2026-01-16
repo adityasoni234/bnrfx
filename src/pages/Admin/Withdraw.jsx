@@ -14,6 +14,7 @@ import {
   createWithdrawal,
   getUserWithdrawals
 } from '../../lib/supabase/helpers';
+import { api } from '../../services/api';
 
 export default function Withdraw() {
   const [amount, setAmount] = useState('');
@@ -33,6 +34,7 @@ export default function Withdraw() {
   const [walletData, setWalletData] = useState(null);
   const [mt5Accounts, setMt5Accounts] = useState([]);
   const [selectedMt5Login, setSelectedMt5Login] = useState('');
+  const [selectedAccountIndex, setSelectedAccountIndex] = useState(0);
   const [withdrawHistory, setWithdrawHistory] = useState([]);
 
   const [accountInfo, setAccountInfo] = useState({
@@ -75,13 +77,25 @@ export default function Withdraw() {
         
         // Calculate account info from first MT5 account
         const mt5Account = accounts[0];
-        setAccountInfo({
-          walletBalance: parseFloat(wallet?.available_balance || 0),
-          mt5Balance: parseFloat(mt5Account.balance || 0),
-          freeMargin: parseFloat(mt5Account.free_margin || 0),
+         const usermt5Account = accounts[0];
+                  console.log('💡 Found existing MT5 account:', usermt5Account);
+                  
+                  const mt5Result = await api.getAccount(usermt5Account.login_id);
+                  
+                  if (mt5Result.success && mt5Result.data) {
+                    // Merge database account with live MT5 data
+                    setAccountInfo({
+                      mt5Balance: parseFloat(mt5Result.data.balance || 0),
+                      freeMargin: parseFloat(mt5Result.data.margin_free || 0),
+                        walletBalance: parseFloat(wallet?.available_balance || 0),
           openPositions: 0, // Will be calculated from positions table
           canWithdraw: parseFloat(mt5Account.free_margin || 0) > 0
-        });
+                    });
+                    console.log('✅ MT5 account data loaded:', mt5Result);
+                  } else {
+                    console.warn('⚠️ MT5 API returned no data, using database values');
+                  }
+        
       } else {
         setAccountInfo({
           walletBalance: parseFloat(wallet?.available_balance || 0),
@@ -107,6 +121,61 @@ export default function Withdraw() {
     accountInfo.walletBalance, 
     accountInfo.freeMargin > 0 ? accountInfo.freeMargin : accountInfo.walletBalance
   );
+
+  const handleAccountChange = async (e) => {
+    const index = parseInt(e.target.value);
+    setSelectedAccountIndex(index);
+    setLoading(true);
+    const selectedAccount = mt5Accounts[index];
+
+    if (selectedAccount) {
+      try {
+        console.log('📊 Fetching data for account:', selectedAccount.login_id);
+        const mt5Result = await api.getAccount(selectedAccount.login_id);
+
+        if (mt5Result.success && mt5Result.data) {
+          setAccountInfo({
+            walletBalance: parseFloat(walletData?.available_balance || 0),
+            mt5Balance: parseFloat(mt5Result.data.balance || 0),
+            freeMargin: parseFloat(mt5Result.data.margin_free || 0),
+            openPositions: 0,
+            canWithdraw: parseFloat(mt5Result.data.margin_free || 0) > 0
+          });
+          console.log('✅ MT5 account data loaded:', mt5Result);
+        } else {
+          setAccountInfo({
+            walletBalance: parseFloat(walletData?.available_balance || 0),
+            mt5Balance: parseFloat(selectedAccount.balance || 0),
+            freeMargin: parseFloat(selectedAccount.free_margin || 0),
+            openPositions: 0,
+            canWithdraw: true
+          });
+        }
+
+        // Fetch positions for this account
+        const positions = await api.getPositions(selectedAccount.login_id);
+        console.log('✅ Fetched MT5 positions:', positions);
+        setAccountInfo((prev) => ({
+          ...prev,
+          openPositions: positions.success && positions.data ? positions.data.total_positions : 0
+        }));
+        setSelectedMt5Login(selectedAccount.login_id);
+      } catch (error) {
+        console.error('❌ Failed to fetch account data:', error);
+        setAccountInfo({
+          walletBalance: parseFloat(walletData?.available_balance || 0),
+          mt5Balance: parseFloat(selectedAccount.balance || 0),
+          freeMargin: parseFloat(selectedAccount.free_margin || 0),
+          openPositions: 0,
+          canWithdraw: true
+        });
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      setLoading(false);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -264,11 +333,11 @@ export default function Withdraw() {
               </div>
               <div className="balance-item">
                 <span className="balance-label">MT5 Balance</span>
-                <span className="balance-value">₹{accountInfo.mt5Balance.toLocaleString()}</span>
+                <span className="balance-value">₹{accountInfo.mt5Balance?.toLocaleString()}</span>
               </div>
               <div className="balance-item">
                 <span className="balance-label">Free Margin</span>
-                <span className="balance-value">₹{accountInfo.freeMargin.toLocaleString()}</span>
+                <span className="balance-value">{parseFloat(accountInfo.freeMargin || 0) < 0 ? '-' : ''}₹{Math.abs(parseFloat(accountInfo.freeMargin || 0)).toFixed(1)}</span>
               </div>
               <div className="balance-item">
                 <span className="balance-label">Open Positions</span>
@@ -291,12 +360,12 @@ export default function Withdraw() {
                 <div className="form-group">
                   <label>MT5 Account</label>
                   <select
-                    value={selectedMt5Login}
-                    onChange={(e) => setSelectedMt5Login(e.target.value)}
+                    value={selectedAccountIndex}
+                    onChange={handleAccountChange}
                     required
                   >
-                    {mt5Accounts.map((account) => (
-                      <option key={account.id} value={account.login_id}>
+                    {mt5Accounts.map((account, index) => (
+                      <option key={account.id} value={index}>
                         {account.login_id} - Balance: ₹{parseFloat(account.balance || 0).toFixed(2)}
                       </option>
                     ))}
