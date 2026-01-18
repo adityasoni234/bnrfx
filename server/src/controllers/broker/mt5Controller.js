@@ -539,3 +539,37 @@ exports.getGroups = async (req, res) => {
     });
   }
 };
+
+// ============================================
+// SYNC USER'S MT5 ACCOUNTS
+// ============================================
+exports.syncUserAccounts = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        message: 'User ID is required'
+      });
+    }
+
+    console.log(`🔄 Syncing MT5 accounts for user: ${userId}`);
+
+    const result = await mt5Service.syncUserAccounts(userId);
+
+    return res.status(200).json({
+      success: true,
+      message: result.message || 'User accounts synced successfully',
+      data: result
+    });
+
+  } catch (error) {
+    console.error('Sync User Accounts Error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to sync user accounts',
+      error: error.message
+    });
+  }
+};

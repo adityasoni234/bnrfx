@@ -60,6 +60,9 @@ import IBDashboard from './pages/Admin/IBDashboard';
 import ReferralLinks from './pages/Admin/ReferralLinks';
 import AttractedClients from './pages/Admin/AttractedClients';
 
+// Admin Layout
+import AdminLayout from './pages/Admin/AdminLayout';
+
 // Broker Admin - Auth
 import BrokerLogin from './pages/BrokerAdmin/Auth/Login';
 
@@ -82,9 +85,6 @@ import TicketsList from './pages/BrokerAdmin/Tickets/TicketsList';
 import SettingsPage from './pages/BrokerAdmin/Settings/SettingsPage';
 import MT5Clients from './pages/BrokerAdmin/MT5Clients/MT5Clients';
 import PaymentSettings from './pages/BrokerAdmin/PaymentSettings/PaymentSettings';
-
-// Components
-import Sidebar from './pages/Admin/Sidebar';
 
 // Broker Protected Route Component
 function BrokerProtectedRoute({ children }) {
@@ -163,31 +163,28 @@ function App() {
 
       {/* ==================== ADMIN ROUTES ==================== */}
       
-      {/* Admin Routes with Sidebar Layout */}
+      {/* Admin Routes with AdminLayout */}
       <Route path="/admin/*" element={
-        <div className="admin-layout">
-          <Sidebar />
-          <div className="admin-content">
-            <Routes>
-              <Route path="dashboard" element={<Dashboard />} />
-              <Route path="profile" element={<Profile />} />
-              <Route path="deposit" element={<Deposit />} />
-              <Route path="withdraw" element={<Withdraw />} />
-              <Route path="live-account" element={<LiveAccount />} />
-              <Route path="transactions" element={<TransactionHistory />} />
-              <Route path="support" element={<SupportTickets />} />
-              <Route path="download" element={<Download />} />
-              
-              {/* IB Room Routes */}
-              <Route path="ib-dashboard" element={<IBDashboard />} />
-              <Route path="referral-links" element={<ReferralLinks />} />
-              <Route path="attracted-clients" element={<AttractedClients />} />
-              
-              {/* Default redirect to dashboard */}
-              <Route path="" element={<Navigate to="dashboard" replace />} />
-            </Routes>
-          </div>
-        </div>
+        <AdminLayout>
+          <Routes>
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="deposit" element={<Deposit />} />
+            <Route path="withdraw" element={<Withdraw />} />
+            <Route path="live-account" element={<LiveAccount />} />
+            <Route path="transactions" element={<TransactionHistory />} />
+            <Route path="support" element={<SupportTickets />} />
+            <Route path="download" element={<Download />} />
+            
+            {/* IB Room Routes */}
+            <Route path="ib-dashboard" element={<IBDashboard />} />
+            <Route path="referral-links" element={<ReferralLinks />} />
+            <Route path="attracted-clients" element={<AttractedClients />} />
+            
+            {/* Default redirect to dashboard */}
+            <Route path="" element={<Navigate to="dashboard" replace />} />
+          </Routes>
+        </AdminLayout>
       } />
 
       {/* ==================== BROKER ADMIN ROUTES ==================== */}

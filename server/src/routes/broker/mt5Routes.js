@@ -63,4 +63,7 @@ router.get('/ib/:masterLogin', mt5Controller.getIBHierarchy);
 // Groups
 router.get('/groups', mt5Controller.getGroups);
 
+// Sync user's MT5 accounts
+router.post('/sync-user-accounts/:userId', mt5Controller.syncUserAccounts);
+
 module.exports = router;

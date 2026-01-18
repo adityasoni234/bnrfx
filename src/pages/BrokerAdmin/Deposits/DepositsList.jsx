@@ -11,6 +11,7 @@ import {
 import './DepositsList.css';
 import { getAllDeposits, updateDepositStatus } from '../../../lib/supabase/helpers';
 import { supabase } from '../../../lib/supabase/client';
+import { api } from '../../../services/api';
 
 export default function DepositsList() {
   const [deposits, setDeposits] = useState([]);
@@ -62,6 +63,13 @@ export default function DepositsList() {
       try {
         console.log('🔍 Step 1: Starting approval for deposit:', depositId)
         
+        // Get deposit details
+        const deposit = deposits.find(d => d.id === depositId);
+        if (!deposit) {
+          alert('Error: Deposit not found');
+          return;
+        }
+        
         // Get current user ID
         const { data: { user } } = await supabase.auth.getUser()
         const currentUserId = user?.id
@@ -72,7 +80,32 @@ export default function DepositsList() {
         }
         
         console.log('👤 Current user ID:', currentUserId)
+        console.log('💰 Deposit details:', { amount: deposit.amount, mt5Login: deposit.mt5Login });
         
+        // Step 1: Deposit to MT5 account if mt5_login exists
+        if (deposit.mt5Login && deposit.mt5Login !== 'N/A') {
+          console.log('📞 Calling MT5 deposit API...');
+          try {
+            const mt5Result = await api.deposit({
+              login: deposit.mt5Login,
+              amount: deposit.amount,
+              comment: `Deposit approval - UTR: ${deposit.utrNumber}`
+            });
+            
+            if (!mt5Result.success) {
+              alert(`Failed to deposit to MT5 account: ${mt5Result.message || 'Unknown error'}`);
+              return;
+            }
+            
+            console.log('✅ MT5 deposit successful:', mt5Result);
+          } catch (mt5Error) {
+            console.error('❌ MT5 deposit failed:', mt5Error);
+            alert(`Failed to deposit to MT5 account: ${mt5Error.message || 'Unknown error'}`);
+            return;
+          }
+        }
+        
+        // Step 2: Update deposit status in Supabase
         const result = await updateDepositStatus(depositId, 'approved', currentUserId)
         
         console.log('✅ Step 2: Update completed:', result)
@@ -82,7 +115,7 @@ export default function DepositsList() {
         
         setShowModal(false)
         
-        alert('Deposit approved successfully! Amount credited to wallet.')
+        alert('Deposit approved successfully! Amount credited to account.')
       } catch (error) {
         console.error('❌ APPROVAL FAILED')
         console.error('Error object:', error)

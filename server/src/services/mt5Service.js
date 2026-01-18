@@ -5,7 +5,7 @@ class MT5Service {
   constructor() {
     // Python Bridge Configuration
     this.pythonBridgeURL = process.env.PYTHON_BRIDGE_URL || 'http://127.0.0.1:5001';
-    this.useRealAPI = process.env.MT5_USE_REAL_API === 'true';
+    this.useRealAPI = true;
     this.isConnected = false;
     
     console.log(`🔗 MT5 Service initialized`);
@@ -14,12 +14,12 @@ class MT5Service {
   }
 
   // Call Python Bridge
-  async callBridge(endpoint, method = 'GET', data = null) {
+  async callBridge(endpoint, method = 'GET', data = null, customTimeout = null) {
     try {
       const config = {
         method,
         url: `${this.pythonBridgeURL}${endpoint}`,
-        timeout: 10000,
+        timeout: customTimeout || 100000, // Use custom timeout or default 10s
         headers: { 'Content-Type': 'application/json' }
       };
       
@@ -456,6 +456,32 @@ class MT5Service {
         connected: false,
         message: error.message
       };
+    }
+  }
+
+  // Sync user's MT5 accounts
+  async syncUserAccounts(userId) {
+    try {
+      console.log(`🔄 Calling bridge to sync accounts for user: ${userId}`);
+      
+      if (this.useRealAPI) {
+        // Use 60-second timeout for sync operations (can sync multiple accounts)
+        const result = await this.callBridge(`/sync-user-accounts/${userId}`, 'POST', null, 60000);
+        console.log(`✅ Sync completed for user ${userId}:`, result);
+        return result;
+      }
+      
+      // Mock response for testing
+      return {
+        success: true,
+        message: 'Mock sync completed',
+        total: 0,
+        successful: 0,
+        failed: 0
+      };
+    } catch (error) {
+      console.error(`❌ Error syncing user accounts:`, error);
+      throw error;
     }
   }
 }

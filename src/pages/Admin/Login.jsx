@@ -43,7 +43,6 @@ function Login() {
         
         alert(`✅ Welcome back, ${result.profile.first_name || 'User'}!`);
         
-        
         // Redirect based on role
         if (result.profile.role === 'broker_admin' || result.profile.role === 'super_admin') {
           window.location.href = '/broker-admin/dashboard';

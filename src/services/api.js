@@ -129,6 +129,7 @@ export const API_ROUTES = {
   IB_HIERARCHY: (masterLogin) => `/api/broker/mt5/ib/${masterLogin}`,
   GROUPS: '/api/broker/mt5/groups',
   SESSIONLOGIN:'/api/broker/mt5/sessionLogin',
+  SYNC_USER_ACCOUNTS: (userId) => `/api/broker/mt5/sync-user-accounts/${userId}`,
 };
 
 // ==============================================
@@ -180,6 +181,9 @@ export const api = {
   getGroups: () => get(API_ROUTES.GROUPS),
   // Session login
   sessionLogin: (mt5_server,mt5_manager,mt5_password) => post(API_ROUTES.SESSIONLOGIN, mt5_server,mt5_manager,mt5_password),
+  
+  // Sync user's MT5 accounts
+  syncUserAccounts: (userId) => post(API_ROUTES.SYNC_USER_ACCOUNTS(userId)),
 };
 
 // Export everything

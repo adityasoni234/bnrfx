@@ -30,8 +30,10 @@ CORS(app)
 # ===== MT5 CONNECTION CONFIG (DEFAULT / FALLBACK) =====
 MT5_CONFIG = {
     "server": "91.243.176.38:443",
-    "manager": 7000,
-    "password": "Raja@123"
+    # "manager": 7000,
+    "manager": 34000,
+    # "password": "Raja@123"
+    "password": "Stvala@123"
 }
 
 manager = MT5Manager.ManagerAPI()
@@ -72,6 +74,65 @@ def connect(pump=0):
 def disconnect():
     with lock:
         manager.Disconnect()
+
+def fetch_account_from_mt5(login: int):
+    """
+    Fetch account info from MT5 server (shared function).
+    Returns dict with account data or None if not found.
+    """
+    if not connect():
+        raise Exception(f"Failed to connect to MT5: {MT5Manager.LastError()}")
+    
+    with lock:
+        try:
+            user = manager.UserRequest(login)
+            if not user:
+                return None
+            
+            account = manager.UserAccountGet(login)
+            
+            if account:
+                margin_level = 0
+                if hasattr(account, 'Margin') and account.Margin > 0:
+                    margin_level = (account.Equity / account.Margin) * 100
+                
+                account_info = {
+                    "login": user.Login,
+                    "name": f"{user.FirstName} {user.LastName}",
+                    "email": user.EMail if hasattr(user, 'EMail') else "",
+                    "group": user.Group,
+                    "leverage": user.Leverage,
+                    "balance": account.Balance if hasattr(account, 'Balance') else user.Balance,
+                    "credit": account.Credit if hasattr(account, 'Credit') else user.Credit,
+                    "equity": account.Equity if hasattr(account, 'Equity') else user.Balance + user.Credit,
+                    "margin": account.Margin if hasattr(account, 'Margin') else 0,
+                    "margin_free": account.MarginFree if hasattr(account, 'MarginFree') else account.Equity if hasattr(account, 'Equity') else user.Balance,
+                    "margin_level": margin_level,
+                    "enabled": user.Rights == 3 or user.Rights == 11,
+                    "registration": user.Registration,
+                    "last_access": user.LastAccess if hasattr(user, 'LastAccess') else 0
+                }
+            else:
+                account_info = {
+                    "login": user.Login,
+                    "name": f"{user.FirstName} {user.LastName}",
+                    "email": user.EMail if hasattr(user, 'EMail') else "",
+                    "group": user.Group,
+                    "leverage": user.Leverage,
+                    "balance": user.Balance,
+                    "credit": user.Credit,
+                    "equity": user.Balance + user.Credit,
+                    "margin": 0,
+                    "margin_free": user.Balance + user.Credit,
+                    "margin_level": 0,
+                    "enabled": user.Rights == 3 or user.Rights == 11,
+                    "registration": user.Registration,
+                    "last_access": user.LastAccess if hasattr(user, 'LastAccess') else 0
+                }
+            
+            return account_info
+        except Exception as e:
+            raise e
 
 @app.route("/connect", methods=["POST"])
 def api_connect():
@@ -205,73 +266,16 @@ def create_user():
 @app.route("/account/<int:login>", methods=["GET"])
 def get_account_info(login):
     """Get account balance and details"""
-    if not connect():
-        return jsonify(error=MT5Manager.LastError()), 500
     print(f"Fetching account info for login: {login}")
     try:
-        print("Requesting user data...")
-        user = manager.UserRequest(login)
-
-        if not user:
-            disconnect()
+        account_info = fetch_account_from_mt5(login)
+        
+        if not account_info:
             return jsonify(success=False, error="Account not found"), 404
         
-        print(f"User data: {user}")
-        
-        # Get real-time account state with equity, margin, etc.
-        print("Requesting account state...")
-        account = manager.UserAccountGet(login)
-        
-        if account:
-            print(f"Account state retrieved")
-            dump_mt5_user(account)
-            
-            # Calculate margin level
-            margin_level = 0
-            if hasattr(account, 'Margin') and account.Margin > 0:
-                margin_level = (account.Equity / account.Margin) * 100
-            
-            account_info = {
-                "login": user.Login,
-                "name": f"{user.FirstName} {user.LastName}",
-                "email": user.EMail if hasattr(user, 'EMail') else "",
-                "group": user.Group,
-                "leverage": user.Leverage,
-                "balance": account.Balance if hasattr(account, 'Balance') else user.Balance,
-                "credit": account.Credit if hasattr(account, 'Credit') else user.Credit,
-                "equity": account.Equity if hasattr(account, 'Equity') else user.Balance + user.Credit,
-                "margin": account.Margin if hasattr(account, 'Margin') else 0,
-                "margin_free": account.MarginFree if hasattr(account, 'MarginFree') else account.Equity if hasattr(account, 'Equity') else user.Balance,
-                "margin_level": margin_level,
-                "enabled": user.Rights == 3 or user.Rights == 11,
-                "registration": user.Registration,
-                "last_access": user.LastAccess if hasattr(user, 'LastAccess') else 0
-            }
-        else:
-            # Fallback if UserAccountGet fails
-            print("⚠️ UserAccountGet failed, using basic user data")
-            account_info = {
-                "login": user.Login,
-                "name": f"{user.FirstName} {user.LastName}",
-                "email": user.EMail if hasattr(user, 'EMail') else "",
-                "group": user.Group,
-                "leverage": user.Leverage,
-                "balance": user.Balance,
-                "credit": user.Credit,
-                "equity": user.Balance + user.Credit,
-                "margin": 0,
-                "margin_free": user.Balance + user.Credit,
-                "margin_level": 0,
-                "enabled": user.Rights == 3 or user.Rights == 11,
-                "registration": user.Registration,
-                "last_access": user.LastAccess if hasattr(user, 'LastAccess') else 0
-            }
-        
-        disconnect()
         return jsonify(success=True, data=account_info)
     except Exception as e:
         print(f"❌ Exception: {str(e)}")
-        disconnect()
         return jsonify(success=False, error=str(e)), 500
 
 @app.route("/balance/deposit", methods=["POST"])
@@ -580,6 +584,72 @@ def get_ib_hierarchy(master_login):
         disconnect()
         return jsonify(success=False, error=str(e)), 500
 
+@app.route("/sync-user-accounts/<user_id>", methods=["POST"])
+def sync_user_accounts(user_id):
+    """
+    Sync MT5 accounts for a specific user.
+    Called when user logs in to update their account data.
+    """
+    try:
+        from sync import sync_mt5_account
+        from supabase_client import get_supabase_client
+        
+        print(f"🔄 Syncing MT5 accounts for user: {user_id}")
+        
+        # Get user's MT5 accounts from Supabase
+        supabase = get_supabase_client()
+        response = supabase.table('mt5_accounts')\
+            .select('login_id')\
+            .eq('user_id', user_id)\
+            .eq('is_active', True)\
+            .execute()
+        
+        if not response.data:
+            return jsonify({
+                'success': True,
+                'message': 'No MT5 accounts found for this user',
+                'total': 0,
+                'successful': 0,
+                'failed': 0
+            })
+        
+        accounts = response.data
+        print(f"📋 Found {len(accounts)} MT5 accounts for user {user_id}")
+        
+        results = []
+        successful = 0
+        failed = 0
+        
+        # Sync each account
+        for account in accounts:
+            login = int(account['login_id'])
+            print(f"   Syncing account: {login}")
+            
+            result = sync_mt5_account(login)
+            time.sleep(1.5)
+            results.append(result)
+            
+            if result['success']:
+                successful += 1
+            else:
+                failed += 1
+        
+        return jsonify({
+            'success': True,
+            'message': f'Synced {successful}/{len(accounts)} accounts successfully',
+            'total': len(accounts),
+            'successful': successful,
+            'failed': failed,
+            'results': results
+        })
+        
+    except Exception as e:
+        print(f"❌ Error syncing user accounts: {str(e)}")
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
 @app.route("/groups", methods=["GET"])
 def get_groups():
     if not connect():
@@ -620,29 +690,17 @@ def get_groups():
 
 
 if __name__ == "__main__":
-    print("🚀 MT5 Manager Bridge Server Starting...")
+    # Establish persistent connection when running as main script
+    print("🚀 MT5 Manager Bridge Server Initializing...")
     print(f"📡 Server: {MT5_CONFIG['server']}")
     print(f"👤 Manager: {MT5_CONFIG['manager']}")
-    print(f"🔐 Testing connection...")
+    print(f"🔐 Establishing persistent connection...")
     
     if connect():
-        print("✅ Connected to MT5 Server successfully!")
-        disconnect()
-        
-        # Initialize MT5 sync scheduler after successful connection
-        if SYNC_AVAILABLE:
-            try:
-                print("🔄 Initializing MT5 → Supabase sync scheduler...")
-                init_sync_scheduler(app)
-                print("✅ Sync scheduler initialized - syncing every 2 minutes")
-            except Exception as e:
-                print(f"⚠️ Failed to initialize sync scheduler: {str(e)}")
-                print("   Server will continue without auto-sync")
-        else:
-            print("⚠️ Sync scheduler not available - install dependencies to enable")
+        print("✅ Persistent connection established!")
+        print("ℹ️  Connection will remain active for all requests")
     else:
         print(f"❌ Connection failed: {MT5Manager.LastError()}")
     
     print("\n🌐 Starting Flask server on http://127.0.0.1:5001")
-    app.run(port=5001, debug=True)
-
+    app.run(port=5001, debug=True, use_reloader=False)

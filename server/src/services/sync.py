@@ -12,19 +12,15 @@ from supabase_client import get_supabase_client
 logger = logging.getLogger(__name__)
 
 
-# Import MT5 account fetch function
 def get_account_info(login: int) -> Optional[Dict[str, Any]]:
     """
-    Fetch account info from MT5 Manager Bridge.
-    Makes HTTP request to the bridge server.
+    Fetch account info from MT5 Manager Bridge via HTTP.
     """
-    import requests
-    import os
-    
-    bridge_url = os.getenv('MT5_BRIDGE_URL', 'http://127.0.0.1:5001')
-    
     try:
-        response = requests.get(f"{bridge_url}/account/{login}", timeout=10)
+        import requests
+        
+        print(f"Fetching account {login} from MT5...")
+        response = requests.get(f"http://127.0.0.1:5001/account/{login}", timeout=30)
         
         if response.status_code == 200:
             data = response.json()
@@ -37,10 +33,10 @@ def get_account_info(login: int) -> Optional[Dict[str, Any]]:
                     'margin': account.get('margin', 0),
                     'free_margin': account.get('margin_free', 0),
                     'profit': account.get('equity', 0) - account.get('balance', 0),
-                    'currency': 'USD'  # Default, can be added to bridge response
+                    'currency': 'USD'
                 }
         
-        print(f"⚠️ Failed to fetch account {login}: HTTP {response.status_code}")
+        print(f"⚠️ Account {login} not found in MT5")
         return None
         
     except Exception as e:
@@ -77,27 +73,13 @@ def sync_mt5_account(login: int) -> Dict[str, Any]:
             # Account not found in MT5
             print(f"⚠️ MT5 account {login} not found")
             
-            # Mark account as inactive in Supabase
-            try:
-                supabase.table('mt5_accounts').update({
-                    'is_active': False,
-                    'updated_at': datetime.utcnow().isoformat()
-                }).eq('login_id', str(login)).execute()
-                
-                return {
-                    'success': False,
-                    'login': login,
-                    'message': 'Account not found in MT5',
-                    'error': 'Account not found'
-                }
-            except Exception as e:
-                print(f"❌ Failed to update inactive status for login {login}: {str(e)}")
-                return {
-                    'success': False,
-                    'login': login,
-                    'message': 'Failed to update inactive status',
-                    'error': str(e)
-                }
+            # Don't mark as inactive - just skip this sync
+            return {
+                'success': False,
+                'login': login,
+                'message': 'Account not found in MT5',
+                'error': 'Account not found'
+            }
         
         # Extract account information
         update_data = {
@@ -150,15 +132,15 @@ def sync_mt5_account(login: int) -> Dict[str, Any]:
         }
 
 
-def sync_all_accounts(delay_between_requests: float = 0.5) -> Dict[str, Any]:
+def sync_all_accounts(delay_between_requests: float = 3.0) -> Dict[str, Any]:
     """
     Sync all active MT5 accounts from Supabase.
     
     Fetches all active MT5 accounts from the database and syncs them sequentially
-    with a delay between requests to avoid MT5 rate limits.
+    with a delay between requests to avoid MT5 rate limits and prevent blocking frontend requests.
     
     Args:
-        delay_between_requests: Delay in seconds between syncing each account (default: 0.5s)
+        delay_between_requests: Delay in seconds between syncing each account (default: 3.0s)
         
     Returns:
         Dict containing sync summary with keys:
