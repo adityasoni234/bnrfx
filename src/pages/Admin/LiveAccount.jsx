@@ -5,6 +5,12 @@ import { getCurrentUser, getUserMT5Accounts } from '../../lib/supabase/helpers';
 import { supabase } from '../../lib/supabase/client';
 import { api } from '../../services/api';
 
+const groupsList = {
+  "Comex":['IND\\3001\\COMEX\\340001\\10 USD-demo10lot','IND\\3001\\COMEX\\340001\\20 USD-demo10lot','IND\\3001\\COMEX\\340001\\30 USD-demo10lot'],
+  "Forex":['IND\\3001\\FOREX\\340001\\STANDARD-contest','IND\\3001\\FOREX\\340001\\GOLD-contest','IND\\3001\\FOREX\\340001\\VIP-contest'],
+  "Mcs":['IND\\3001\\LOT\\34001\\M200-F500-demo10lot'],
+}
+
 function LiveAccount() {
   const [showPassword, setShowPassword] = useState({});
   const [currentAccountIndex, setCurrentAccountIndex] = useState(0);
@@ -12,7 +18,7 @@ function LiveAccount() {
   const [creating, setCreating] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [accounts, setAccounts] = useState([]);
-  const [groups, setGroups] = useState([]);
+  const [groups, setGroups] = useState(groupsList);
 
   const [formData, setFormData] = useState({
     accountGroup: 'LIVE PRO',
@@ -43,8 +49,8 @@ function LiveAccount() {
       const mt5Accounts = await getUserMT5Accounts(user.user.id);
       setAccounts(mt5Accounts || []);
 
-      const groups = await api.getGroups();
-      setGroups(groups.data || []);
+      // const groups = await api.getGroups();
+      // setGroups(groups.data || []);
 
     } catch (error) {
       console.error('Error fetching accounts:', error);
@@ -266,10 +272,16 @@ function LiveAccount() {
                 onChange={handleChange}
                 required
               >
-                {groups.map((group) => (
-                  <option key={group.name} value={removeOneSlash(group.name)}>
-                    {getLastPartAfterSlash(group.name)}
+                {Object.keys(groups).map((group) => (
+                   <optgroup label={group}>
+                    {groups[group].map((groupName) => (
+                  <option key={groupName} value={removeOneSlash(groupName)}>
+                    {getLastPartAfterSlash(groupName)}
                   </option>
+                    ))}
+                 
+                   </optgroup>
+                
                 ))}
                 {/* <option value="LIVE PRO">LIVE PRO</option>
                 <option value="LIVE STANDARD">LIVE STANDARD</option>
