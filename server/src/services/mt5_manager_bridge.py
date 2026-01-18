@@ -212,7 +212,7 @@ def create_user():
          # 1. Retrieve all users for that group
         total_groups = manager.GroupTotal()
         print(f"Total groups found on server: {total_groups}")
-        target_group_mask = r"IND\3001\COMEX\7001\10 USD-demo10lot*" 
+        target_group_mask = data.get("group", "IND\\3001\\COMEX\\7001\\10 USD-demo10lot") + "*"
         users_list = manager.UserGetByGroup(target_group_mask)
         print(f"Users in group: {[u.Login for u in users_list]}")
         if users_list and len(users_list) > 0:
