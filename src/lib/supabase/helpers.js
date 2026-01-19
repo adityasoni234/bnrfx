@@ -2,7 +2,7 @@ import { supabase } from './client'
 import { supabaseAdmin } from './admin'
 
 // Get site URL from environment or use default
-const SITE_URL = process.env.REACT_APP_SITE_URL || 'bnrfx.com'
+const SITE_URL = process.env.REACT_APP_SITE_URL || 'https://bnrfx.com'
 
 // ============================================
 // AUTHENTICATION

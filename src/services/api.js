@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Base URL for API
-const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+const BASE_URL = process.env.REACT_APP_API_URL || 'https://api.bnrfx.com';
 
 // Create axios instance
 const apiClient = axios.create({
