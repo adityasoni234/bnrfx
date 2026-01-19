@@ -1,5 +1,5 @@
-import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 
 // Website Pages
 import Home from './pages/Website/Home';
@@ -60,9 +60,6 @@ import IBDashboard from './pages/Admin/IBDashboard';
 import ReferralLinks from './pages/Admin/ReferralLinks';
 import AttractedClients from './pages/Admin/AttractedClients';
 
-// Admin Layout
-import AdminLayout from './pages/Admin/AdminLayout';
-
 // Broker Admin - Auth
 import BrokerLogin from './pages/BrokerAdmin/Auth/Login';
 
@@ -86,6 +83,25 @@ import SettingsPage from './pages/BrokerAdmin/Settings/SettingsPage';
 import MT5Clients from './pages/BrokerAdmin/MT5Clients/MT5Clients';
 import PaymentSettings from './pages/BrokerAdmin/PaymentSettings/PaymentSettings';
 
+// Components
+import Sidebar from './pages/Admin/Sidebar';
+
+// ==================== SCROLL TO TOP COMPONENT ====================
+// Automatically scrolls to top on route change
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'instant' // 'instant' for immediate scroll, 'smooth' for animated
+    });
+  }, [pathname]);
+
+  return null;
+}
+
 // Broker Protected Route Component
 function BrokerProtectedRoute({ children }) {
   const isBrokerAuthenticated = localStorage.getItem('isBrokerAuthenticated') === 'true';
@@ -102,120 +118,128 @@ function BrokerProtectedRoute({ children }) {
 
 function App() {
   return (
-    <Routes>
-      {/* ==================== WEBSITE ROUTES ==================== */}
+    <>
+      {/* ScrollToTop component - ensures all pages open from top */}
+      <ScrollToTop />
       
-      {/* Home Page */}
-      <Route path="/" element={<Home />} />
-      
-      {/* Contact Page */}
-      <Route path="/contact" element={<Contact />} />
+      <Routes>
+        {/* ==================== WEBSITE ROUTES ==================== */}
+        
+        {/* Home Page */}
+        <Route path="/" element={<Home />} />
+        
+        {/* Contact Page */}
+        <Route path="/contact" element={<Contact />} />
 
-      {/* Company Routes */}
-      <Route path="/company/why-bnr-fx" element={<WhyBNRFx />} />
-      <Route path="/company/contact-us" element={<ContactUs />} />
-      <Route path="/company/awards" element={<Awards />} />
-      <Route path="/company/regulation" element={<Regulation />} />
-      <Route path="/company/career" element={<Career />} />
+        {/* Company Routes */}
+        <Route path="/company/why-bnr-fx" element={<WhyBNRFx />} />
+        <Route path="/company/contact-us" element={<ContactUs />} />
+        <Route path="/company/awards" element={<Awards />} />
+        <Route path="/company/regulation" element={<Regulation />} />
+        <Route path="/company/career" element={<Career />} />
 
-      {/* Important Links Routes */}
-      <Route path="/important-links/trading-rewards" element={<TradingRewards />} />
-      <Route path="/important-links/exclusive-rewards" element={<ExclusiveRewards />} />
-      <Route path="/important-links/partnership" element={<Partnership />} />
-      <Route path="/important-links/deposit-bonus" element={<DepositBonus />} />
+        {/* Important Links Routes */}
+        <Route path="/important-links/trading-rewards" element={<TradingRewards />} />
+        <Route path="/important-links/exclusive-rewards" element={<ExclusiveRewards />} />
+        <Route path="/important-links/partnership" element={<Partnership />} />
+        <Route path="/important-links/deposit-bonus" element={<DepositBonus />} />
 
-      {/* Extra's Routes */}
-      <Route path="/extras/social-media" element={<SocialMedia />} />
-      <Route path="/extras/margin-calculator" element={<MarginCalculator />} />
+        {/* Extra's Routes */}
+        <Route path="/extras/social-media" element={<SocialMedia />} />
+        <Route path="/extras/margin-calculator" element={<MarginCalculator />} />
 
-      {/* Accounts Routes */}
-      <Route path="/accounts/demo-account" element={<DemoAccount />} />
-      <Route path="/accounts/enc-account" element={<ENCAccount />} />
-      <Route path="/accounts/standard-account" element={<StandardAccount />} />
-      <Route path="/accounts/premium-account" element={<PremiumAccount />} />
+        {/* Accounts Routes */}
+        <Route path="/accounts/demo-account" element={<DemoAccount />} />
+        <Route path="/accounts/enc-account" element={<ENCAccount />} />
+        <Route path="/accounts/standard-account" element={<StandardAccount />} />
+        <Route path="/accounts/premium-account" element={<PremiumAccount />} />
 
-      {/* Forex Routes */}
-      <Route path="/forex/trading" element={<Trading />} />
-      <Route path="/forex/islamic-account" element={<IslamicAccount />} />
-      <Route path="/forex/trading-conditions" element={<TradingConditions />} />
-      <Route path="/forex/account-comparison" element={<AccountComparison />} />
+        {/* Forex Routes */}
+        <Route path="/forex/trading" element={<Trading />} />
+        <Route path="/forex/islamic-account" element={<IslamicAccount />} />
+        <Route path="/forex/trading-conditions" element={<TradingConditions />} />
+        <Route path="/forex/account-comparison" element={<AccountComparison />} />
 
-      {/* Financial Routes */}
-      <Route path="/financial/security-of-funds" element={<SecurityOfFunds />} />
-      <Route path="/financial/deposit-withdrawal" element={<DepositWithdrawal />} />
-      <Route path="/financial/negative-balance-protection" element={<NegativeBalanceProtection />} />
+        {/* Financial Routes */}
+        <Route path="/financial/security-of-funds" element={<SecurityOfFunds />} />
+        <Route path="/financial/deposit-withdrawal" element={<DepositWithdrawal />} />
+        <Route path="/financial/negative-balance-protection" element={<NegativeBalanceProtection />} />
 
-      {/* Platform Routes */}
-      <Route path="/platform/all-terminal" element={<AllTerminal />} />
-      <Route path="/platform/download-pc" element={<DownloadPC />} />
-      <Route path="/platform/download-android" element={<DownloadAndroid />} />
-      <Route path="/platform/download-apple" element={<DownloadApple />} />
+        {/* Platform Routes */}
+        <Route path="/platform/all-terminal" element={<AllTerminal />} />
+        <Route path="/platform/download-pc" element={<DownloadPC />} />
+        <Route path="/platform/download-android" element={<DownloadAndroid />} />
+        <Route path="/platform/download-apple" element={<DownloadApple />} />
 
-      {/* ==================== AUTHENTICATION ROUTES ==================== */}
-      
-      {/* Broker Admin Login - Public Route */}
-      <Route path="/broker-admin/login" element={<BrokerLogin />} />
+        {/* ==================== AUTHENTICATION ROUTES ==================== */}
+        
+        {/* Broker Admin Login - Public Route */}
+        <Route path="/broker-admin/login" element={<BrokerLogin />} />
 
-      {/* Client Authentication Routes */}
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/admin/login" element={<Login />} />
+        {/* Client Authentication Routes */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/admin/login" element={<Login />} />
 
-      {/* ==================== ADMIN ROUTES ==================== */}
-      
-      {/* Admin Routes with AdminLayout */}
-      <Route path="/admin/*" element={
-        <AdminLayout>
-          <Routes>
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="profile" element={<Profile />} />
-            <Route path="deposit" element={<Deposit />} />
-            <Route path="withdraw" element={<Withdraw />} />
-            <Route path="live-account" element={<LiveAccount />} />
-            <Route path="transactions" element={<TransactionHistory />} />
-            <Route path="support" element={<SupportTickets />} />
-            <Route path="download" element={<Download />} />
-            
-            {/* IB Room Routes */}
-            <Route path="ib-dashboard" element={<IBDashboard />} />
-            <Route path="referral-links" element={<ReferralLinks />} />
-            <Route path="attracted-clients" element={<AttractedClients />} />
-            
-            {/* Default redirect to dashboard */}
-            <Route path="" element={<Navigate to="dashboard" replace />} />
-          </Routes>
-        </AdminLayout>
-      } />
+        {/* ==================== ADMIN ROUTES ==================== */}
+        
+        {/* Admin Routes with Sidebar Layout */}
+        <Route path="/admin/*" element={
+          <div className="admin-layout">
+            <Sidebar />
+            <div className="admin-content">
+              <Routes>
+                <Route path="dashboard" element={<Dashboard />} />
+                <Route path="profile" element={<Profile />} />
+                <Route path="deposit" element={<Deposit />} />
+                <Route path="withdraw" element={<Withdraw />} />
+                <Route path="live-account" element={<LiveAccount />} />
+                <Route path="transactions" element={<TransactionHistory />} />
+                <Route path="support" element={<SupportTickets />} />
+                <Route path="download" element={<Download />} />
+                
+                {/* IB Room Routes */}
+                <Route path="ib-dashboard" element={<IBDashboard />} />
+                <Route path="referral-links" element={<ReferralLinks />} />
+                <Route path="attracted-clients" element={<AttractedClients />} />
+                
+                {/* Default redirect to dashboard */}
+                <Route path="" element={<Navigate to="dashboard" replace />} />
+              </Routes>
+            </div>
+          </div>
+        } />
 
-      {/* ==================== BROKER ADMIN ROUTES ==================== */}
-      
-      {/* Broker Admin Routes - PROTECTED */}
-      <Route path="/broker-admin" element={
-        <BrokerProtectedRoute>
-          <BrokerLayout />
-        </BrokerProtectedRoute>
-      }>
-        <Route index element={<Navigate to="/broker-admin/dashboard" replace />} />
-        <Route path="dashboard" element={<BrokerDashboard />} />
-        <Route path="clients" element={<ClientsList />} />
-        <Route path="ib-management" element={<IBList />} />
-        <Route path="wallets" element={<WalletsList />} />
-        <Route path="deposits" element={<DepositsList />} />
-        <Route path="withdrawals" element={<WithdrawalsList />} />
-        <Route path="kyc" element={<KYCQueue />} />
-        <Route path="rebates" element={<RebatesList />} />
-        <Route path="payouts" element={<PayoutsList />} />
-        <Route path="risk" element={<RiskMonitor />} />
-        <Route path="reports" element={<ReportsList />} />
-        <Route path="tickets" element={<TicketsList />} />
-        <Route path="mt5-clients" element={<MT5Clients />} />
-        <Route path="payment-settings" element={<PaymentSettings />} />
-        <Route path="settings" element={<SettingsPage />} />
-      </Route>
+        {/* ==================== BROKER ADMIN ROUTES ==================== */}
+        
+        {/* Broker Admin Routes - PROTECTED */}
+        <Route path="/broker-admin" element={
+          <BrokerProtectedRoute>
+            <BrokerLayout />
+          </BrokerProtectedRoute>
+        }>
+          <Route index element={<Navigate to="/broker-admin/dashboard" replace />} />
+          <Route path="dashboard" element={<BrokerDashboard />} />
+          <Route path="clients" element={<ClientsList />} />
+          <Route path="ib-management" element={<IBList />} />
+          <Route path="wallets" element={<WalletsList />} />
+          <Route path="deposits" element={<DepositsList />} />
+          <Route path="withdrawals" element={<WithdrawalsList />} />
+          <Route path="kyc" element={<KYCQueue />} />
+          <Route path="rebates" element={<RebatesList />} />
+          <Route path="payouts" element={<PayoutsList />} />
+          <Route path="risk" element={<RiskMonitor />} />
+          <Route path="reports" element={<ReportsList />} />
+          <Route path="tickets" element={<TicketsList />} />
+          <Route path="mt5-clients" element={<MT5Clients />} />
+          <Route path="payment-settings" element={<PaymentSettings />} />
+          <Route path="settings" element={<SettingsPage />} />
+        </Route>
 
-      {/* Catch all - redirect to home */}
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+        {/* Catch all - redirect to home */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </>
   );
 }
 

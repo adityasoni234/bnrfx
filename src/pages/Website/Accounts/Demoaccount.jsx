@@ -115,7 +115,7 @@ const DemoAccount = () => {
         <div className="cta">
           <h2>Open Your Demo Account Today</h2>
           <p>Start practicing with virtual funds and build your trading skills</p>
-          <a href="#" className="cta-button">Open Demo Account</a>
+          <a href="https://bnrfx.com/register" className="cta-button">Open Demo Account</a>
         </div>
       </div>
     </div>

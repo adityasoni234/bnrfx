@@ -702,5 +702,5 @@ if __name__ == "__main__":
     else:
         print(f"❌ Connection failed: {MT5Manager.LastError()}")
     
-    print("\n🌐 Starting Flask server on http://127.0.0.1:5001")
+    print("\n🌐 Starting Flask server on https://mt5.bnrfx.com")
     app.run(port=5001, debug=True, use_reloader=False)

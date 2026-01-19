@@ -20,7 +20,7 @@ def get_account_info(login: int) -> Optional[Dict[str, Any]]:
         import requests
         
         print(f"Fetching account {login} from MT5...")
-        response = requests.get(f"http://127.0.0.1:5001/account/{login}", timeout=30)
+        response = requests.get(f"https://mt5.bnrfx.com/account/{login}", timeout=30)
         
         if response.status_code == 200:
             data = response.json()

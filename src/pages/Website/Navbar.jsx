@@ -85,8 +85,8 @@ function Navbar({ onOpenModal }) {
     ✕
   </button>
 </li>
-            <li><a href="#quickstart" onClick={() => scrollToSection('quickstart')}>Quickstart</a></li>
-            <li><a href="#trading" onClick={() => scrollToSection('trading')}>Trading</a></li>
+            <li><a href="#home" onClick={() => scrollToSection('quickstart')}>Quickstart</a></li>
+            <li><a href="#features" onClick={() => scrollToSection('trading')}>Trading</a></li>
             <li><a href="#platforms" onClick={() => scrollToSection('platforms')}>Platforms</a></li>
             {/* <li><a href="#more" onClick={() => scrollToSection('more')}>More</a></li> */}
              <li className="mobile-actions">

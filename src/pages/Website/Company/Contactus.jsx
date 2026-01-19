@@ -273,7 +273,7 @@ const ContactUs = () => {
             <div className="contact-icon">📱</div>
             <h3>WhatsApp</h3>
             <p>Connect via messenger</p>
-            <p style={{marginTop: '18px'}}><a href="https://wa.me/971501234567">+971 50 123 4567</a></p>
+            <p style={{marginTop: '18px'}}><a href="https://wa.me/+12087390893">+1 (208) 739 0893</a></p>
             <p style={{fontSize: '0.95rem', color: '#999', marginTop: '12px'}}>Quick and convenient</p>
           </div>
         </div>
@@ -363,7 +363,7 @@ const ContactUs = () => {
             <h3>🇦🇪 BNR Fx - Dubai Office</h3>
             <p><strong>Location:</strong> Dubai, United Arab Emirates</p>
             <p><strong>Email:</strong> support@bnrfx.com</p>
-            <p><strong>WhatsApp:</strong> +971 50 123 4567</p>
+            <p><strong>WhatsApp:</strong> +1 (208) 739 0893</p>
             <p><strong>Hours:</strong> Sunday - Thursday: 9:00 AM - 6:00 PM GST</p>
           </div>
         </div>

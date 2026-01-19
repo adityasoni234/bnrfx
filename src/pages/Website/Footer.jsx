@@ -56,12 +56,12 @@ function Footer() {
             <div className="footer-column footer-brand">
               <Link to="/" className="footer-logo">
                 <div className="logo-icon-footer">
-                  <div className="bar bar1"></div>
-                  <div className="bar bar2"></div>
-                  <div className="bar bar3"></div>
+                  <img src="/logo.png" alt="BNR Fx" className="hero-logo-image" />
+                  
                 </div>
                 <div className="logo-text-footer">
-                  <span className="fx-text">BNR Fx</span>
+              
+                  {/* <span className="fx-text">BNR Fx</span> */}
                 </div>
               </Link>
               <p className="footer-description">

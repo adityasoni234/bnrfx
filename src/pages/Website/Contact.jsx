@@ -44,7 +44,7 @@ function Contact() {
             <div className="info-card">
               <div className="info-icon">📞</div>
               <h3 className="info-title">Call Us</h3>
-              <p className="info-text">+1 (555) 123-4567</p>
+              <p className="info-text">+1 (208) 739-0893</p>
               <p className="info-text">Mon-Fri: 9AM - 6PM EST</p>
             </div>
 
@@ -59,7 +59,7 @@ function Contact() {
               <div className="info-icon">💬</div>
               <h3 className="info-title">Live Chat</h3>
               <p className="info-text">Available 24/7</p>
-              <button className="whatsapp-btn" onClick={() => window.open('https://wa.me/1234567890', '_blank')}>
+              <button className="whatsapp-btn" onClick={() => window.open('https://wa.me/+12087390893', '_blank')}>
                 Chat on WhatsApp
               </button>
             </div>
