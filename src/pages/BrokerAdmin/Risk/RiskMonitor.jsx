@@ -238,7 +238,7 @@ export default function RiskMonitor() {
           <div className="stat-icon">💹</div>
           <div className="stat-info">
             <p>Total Exposure</p>
-            <h3>₹{totalExposure.toLocaleString()}</h3>
+            <h3>${totalExposure.toLocaleString()}</h3>
           </div>
         </div>
         <div className="stat-card-small positions">
@@ -283,7 +283,7 @@ export default function RiskMonitor() {
                     </div>
                     <div>
                       <span className="label">Equity:</span>
-                      <span className="value">₹{alert.equity.toLocaleString()}</span>
+                      <span className="value">${alert.equity.toLocaleString()}</span>
                     </div>
                   </div>
                 </div>
@@ -321,10 +321,10 @@ export default function RiskMonitor() {
                   <td>
                     <span className="mt5-badge">{account.mt5Login}</span>
                   </td>
-                  <td>₹{account.balance.toLocaleString()}</td>
-                  <td>₹{account.equity.toLocaleString()}</td>
-                  <td>₹{account.margin.toLocaleString()}</td>
-                  <td>₹{account.freeMargin.toLocaleString()}</td>
+                  <td>${account.balance.toLocaleString()}</td>
+                  <td>${account.equity.toLocaleString()}</td>
+                  <td>${account.margin.toLocaleString()}</td>
+                  <td>${account.freeMargin.toLocaleString()}</td>
                   <td>
                     <span 
                       className="margin-level"
@@ -383,7 +383,7 @@ export default function RiskMonitor() {
                     </span>
                   </td>
                   <td>
-                    <span className="exposure-amount">₹{symbol.exposure.toLocaleString()}</span>
+                    <span className="exposure-amount">${symbol.exposure.toLocaleString()}</span>
                   </td>
                 </tr>
               ))}

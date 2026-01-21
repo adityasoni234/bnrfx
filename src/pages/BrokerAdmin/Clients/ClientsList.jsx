@@ -187,7 +187,7 @@ export default function ClientsList() {
                     </div>
                   </td>
                   <td>
-                    <span className="balance">₹{client.balance.toLocaleString()}</span>
+                    <span className="balance">${client.balance.toLocaleString()}</span>
                   </td>
                   <td>
                     <span className={`status-badge kyc-${client.kycStatus.toLowerCase()}`}>

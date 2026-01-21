@@ -164,10 +164,10 @@ function AttractedClients() {
               <tr>
                 <th>USER NAME</th>
                 <th>USER EMAIL</th>
-                <th>TOTAL DEPOSITS (₹)</th>
-                <th>TOTAL WITHDRAWALS (₹)</th>
-                <th>TOTAL VOLUME (₹)</th>
-                <th>TOTAL COMMISSION (₹)</th>
+                <th>TOTAL DEPOSITS ($)</th>
+                <th>TOTAL WITHDRAWALS ($)</th>
+                <th>TOTAL VOLUME ($)</th>
+                <th>TOTAL COMMISSION ($)</th>
                 <th>COUNTRY</th>
                 <th>REGISTRATION DATE</th>
               </tr>
@@ -178,10 +178,10 @@ function AttractedClients() {
                   <tr key={index}>
                     <td>{client.userName}</td>
                     <td>{client.userEmail}</td>
-                    <td className="amount">₹{parseFloat(client.totalDeposits).toLocaleString()}</td>
-                    <td className="amount">₹{parseFloat(client.totalWithdrawals).toLocaleString()}</td>
-                    <td className="volume">₹{client.totalVolume}</td>
-                    <td className="commission">₹{client.totalCommission}</td>
+                    <td className="amount">${parseFloat(client.totalDeposits).toLocaleString()}</td>
+                    <td className="amount">${parseFloat(client.totalWithdrawals).toLocaleString()}</td>
+                    <td className="volume">${client.totalVolume}</td>
+                    <td className="commission">${client.totalCommission}</td>
                     <td>{client.country}</td>
                     <td>{client.registrationDate}</td>
                   </tr>

@@ -214,10 +214,10 @@ function TransactionHistory() {
                       }}
                     >
                       {['deposit', 'commission', 'rebate'].includes(transaction.transaction_type.toLowerCase()) ? '+' : '-'}
-                      ₹{parseFloat(transaction.amount).toFixed(2)}
+                      ${parseFloat(transaction.amount).toFixed(2)}
                     </td>
-                    <td>₹{parseFloat(transaction.balance_before || 0).toFixed(2)}</td>
-                    <td>₹{parseFloat(transaction.balance_after || 0).toFixed(2)}</td>
+                    <td>${parseFloat(transaction.balance_before || 0).toFixed(2)}</td>
+                    <td>${parseFloat(transaction.balance_after || 0).toFixed(2)}</td>
                     <td>{new Date(transaction.created_at).toLocaleString()}</td>
                     <td>{transaction.description || 'N/A'}</td>
                   </tr>

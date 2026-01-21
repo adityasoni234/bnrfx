@@ -124,7 +124,7 @@ export default function IBList() {
           <div className="stat-icon">💰</div>
           <div className="stat-info">
             <p>Total Rebates Paid</p>
-            <h3>₹{stats.totalRebates.toLocaleString()}</h3>
+            <h3>${stats.totalRebates.toLocaleString()}</h3>
           </div>
         </div>
       </div>
@@ -232,7 +232,7 @@ export default function IBList() {
                     </div>
                   </td>
                   <td>
-                    <span className="rebate-amount">₹{ib.totalRebates.toLocaleString()}</span>
+                    <span className="rebate-amount">${ib.totalRebates.toLocaleString()}</span>
                   </td>
                   <td>
                     <span className={`status-badge status-${ib.status.toLowerCase()}`}>

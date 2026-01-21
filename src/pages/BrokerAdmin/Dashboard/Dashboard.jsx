@@ -185,7 +185,7 @@ export default function Dashboard() {
             </div>
             <span className="stat-label">Today's Deposits</span>
           </div>
-          <h3 className="stat-value">₹{stats.todayDeposits.toLocaleString()}</h3>
+          <h3 className="stat-value">${stats.todayDeposits.toLocaleString()}</h3>
           <p className="stat-subtitle">Approved deposits today</p>
         </div>
 
@@ -197,7 +197,7 @@ export default function Dashboard() {
             </div>
             <span className="stat-label">Today's Withdrawals</span>
           </div>
-          <h3 className="stat-value">₹{stats.todayWithdrawals.toLocaleString()}</h3>
+          <h3 className="stat-value">${stats.todayWithdrawals.toLocaleString()}</h3>
           <p className="stat-subtitle">Processing smoothly</p>
         </div>
 
@@ -254,7 +254,7 @@ export default function Dashboard() {
                     </span>
                   </div>
                   <div className="activity-amount green">
-                    +₹{deposit.amount.toLocaleString()}
+                    +${deposit.amount.toLocaleString()}
                   </div>
                 </div>
               ))
@@ -290,7 +290,7 @@ export default function Dashboard() {
                     </span>
                   </div>
                   <div className="activity-amount orange">
-                    -₹{withdrawal.amount.toLocaleString()}
+                    -${withdrawal.amount.toLocaleString()}
                   </div>
                 </div>
               ))

@@ -189,12 +189,12 @@ export default function Withdraw() {
 
     // Validations
     if (withdrawAmount < minWithdrawal) {
-      alert(`Minimum withdrawal amount is ₹${minWithdrawal.toLocaleString()}`);
+      alert(`Minimum withdrawal amount is $${minWithdrawal.toLocaleString()}`);
       return;
     }
 
     if (withdrawAmount > maxWithdrawal) {
-      alert(`Maximum withdrawal amount is ₹${maxWithdrawal.toLocaleString()} (based on your available balance)`);
+      alert(`Maximum withdrawal amount is $${maxWithdrawal.toLocaleString()} (based on your available balance)`);
       return;
     }
 
@@ -329,15 +329,15 @@ export default function Withdraw() {
             <div className="balance-grid">
               <div className="balance-item">
                 <span className="balance-label">Wallet Balance</span>
-                <span className="balance-value">₹{accountInfo.walletBalance.toLocaleString()}</span>
+                <span className="balance-value">${accountInfo.walletBalance.toLocaleString()}</span>
               </div>
               <div className="balance-item">
                 <span className="balance-label">MT5 Balance</span>
-                <span className="balance-value">₹{accountInfo.mt5Balance?.toLocaleString()}</span>
+                <span className="balance-value">${accountInfo.mt5Balance?.toLocaleString()}</span>
               </div>
               <div className="balance-item">
                 <span className="balance-label">Free Margin</span>
-                <span className="balance-value">{parseFloat(accountInfo.freeMargin || 0) < 0 ? '-' : ''}₹{Math.abs(parseFloat(accountInfo.freeMargin || 0)).toFixed(1)}</span>
+                <span className="balance-value">{parseFloat(accountInfo.freeMargin || 0) < 0 ? '-' : ''}${Math.abs(parseFloat(accountInfo.freeMargin || 0)).toFixed(1)}</span>
               </div>
               <div className="balance-item">
                 <span className="balance-label">Open Positions</span>
@@ -346,7 +346,7 @@ export default function Withdraw() {
             </div>
             <div className="max-withdraw">
               <MdWarning size={18} />
-              <span>Maximum withdrawable: ₹{maxWithdrawal.toLocaleString()}</span>
+              <span>Maximum withdrawable: ${maxWithdrawal.toLocaleString()}</span>
             </div>
           </div>
 
@@ -366,7 +366,7 @@ export default function Withdraw() {
                   >
                     {mt5Accounts.map((account, index) => (
                       <option key={account.id} value={index}>
-                        {account.login_id} - Balance: ₹{parseFloat(account.balance || 0).toFixed(2)}
+                        {account.login_id} - Balance: ${parseFloat(account.balance || 0).toFixed(2)}
                       </option>
                     ))}
                   </select>
@@ -375,17 +375,17 @@ export default function Withdraw() {
 
               {/* Amount */}
               <div className="form-group">
-                <label>Withdrawal Amount (₹)</label>
+                <label>Withdrawal Amount ($)</label>
                 <input
                   type="number"
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
-                  placeholder={`Enter amount (Min: ₹${minWithdrawal.toLocaleString()})`}
+                  placeholder={`Enter amount (Min: $${minWithdrawal.toLocaleString()})`}
                   min={minWithdrawal}
                   max={maxWithdrawal}
                   required
                 />
-                <small>Minimum: ₹{minWithdrawal.toLocaleString()} | Maximum: ₹{maxWithdrawal.toLocaleString()}</small>
+                <small>Minimum: ${minWithdrawal.toLocaleString()} | Maximum: ${maxWithdrawal.toLocaleString()}</small>
               </div>
 
               {/* Withdrawal Method */}
@@ -504,7 +504,7 @@ export default function Withdraw() {
                       {getStatusIcon(withdrawal.status)}
                     </div>
                     <div className="history-details">
-                      <div className="history-amount">₹{parseFloat(withdrawal.amount).toLocaleString()}</div>
+                      <div className="history-amount">${parseFloat(withdrawal.amount).toLocaleString()}</div>
                       <div className="history-method">{withdrawal.withdrawal_method.replace('_', ' ').toUpperCase()}</div>
                       <div className="history-date">{new Date(withdrawal.created_at).toLocaleDateString()}</div>
                       {withdrawal.account_number && (
@@ -532,7 +532,7 @@ export default function Withdraw() {
           <div className="quick-info-card">
             <h3>💡 Withdrawal Info</h3>
             <ul>
-              <li>Min withdrawal: ₹{minWithdrawal.toLocaleString()}</li>
+              <li>Min withdrawal: ${minWithdrawal.toLocaleString()}</li>
               <li>Processing: 24-48 hours</li>
               <li>No withdrawal fees</li>
               <li>Close positions for max withdrawal</li>

@@ -190,7 +190,7 @@ export default function WithdrawalsList() {
           <div className="stat-icon">💸</div>
           <div className="stat-info">
             <p>Total Paid</p>
-            <h3>₹{stats.totalAmount.toLocaleString()}</h3>
+            <h3>${stats.totalAmount.toLocaleString()}</h3>
           </div>
         </div>
       </div>
@@ -278,11 +278,11 @@ export default function WithdrawalsList() {
                     </div>
                   </td>
                   <td>
-                    <span className="amount withdrawal-amount">₹{withdrawal.amount.toLocaleString()}</span>
+                    <span className="amount withdrawal-amount">${withdrawal.amount.toLocaleString()}</span>
                   </td>
                   <td>
                     <div className="balance-info">
-                      <span className="balance">₹{withdrawal.mt5Balance.toLocaleString()}</span>
+                      <span className="balance">${withdrawal.mt5Balance.toLocaleString()}</span>
                       {withdrawal.amount > withdrawal.mt5Balance && (
                         <span className="insufficient-badge">
                           <MdWarning size={14} /> Insufficient
@@ -372,7 +372,7 @@ export default function WithdrawalsList() {
               </div>
               <div className="detail-row">
                 <span className="detail-label">Amount:</span>
-                <span className="detail-value amount">₹{selectedWithdrawal.amount.toLocaleString()}</span>
+                <span className="detail-value amount">${selectedWithdrawal.amount.toLocaleString()}</span>
               </div>
               {selectedWithdrawal.status === 'PENDING' && (
                 <div className="modal-footer">

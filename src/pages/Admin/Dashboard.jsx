@@ -262,28 +262,28 @@ function Dashboard() {
   }
 
   const statsData = [
-    { label: 'Total Deposit', value: `₹${stats.totalDeposit.toFixed(2)}`, color: 'green' },
-    { label: 'Total Withdraw', value: `₹${stats.totalWithdraw.toFixed(2)}`, color: 'red' },
-    { label: 'Referral Income', value: `₹${stats.referralIncome.toFixed(2)}`, color: 'blue' },
-    { label: 'Referral Payout', value: `₹${stats.referralPayout.toFixed(2)}`, color: 'orange' },
-    // { label: 'Trading Deposit', value: `₹${stats.tradingDeposit.toFixed(2)}`, color: 'green' },
-    // { label: 'Trading Withdraw', value: `₹${stats.tradingWithdraw.toFixed(2)}`, color: 'red' }
+    { label: 'Total Deposit', value: `$${stats.totalDeposit.toFixed(2)}`, color: 'green' },
+    { label: 'Total Withdraw', value: `$${stats.totalWithdraw.toFixed(2)}`, color: 'red' },
+    { label: 'Referral Income', value: `$${stats.referralIncome.toFixed(2)}`, color: 'blue' },
+    { label: 'Referral Payout', value: `$${stats.referralPayout.toFixed(2)}`, color: 'orange' },
+    // { label: 'Trading Deposit', value: `$${stats.tradingDeposit.toFixed(2)}`, color: 'green' },
+    // { label: 'Trading Withdraw', value: `$${stats.tradingWithdraw.toFixed(2)}`, color: 'red' }
   ];
 
   const accountDetails = mt5Account ? {
     accountNo: `#${mt5Account.login_id}`,
     leverage: mt5Account.leverage || '500',
-    balance: `₹${parseFloat(mt5Account.balance || 0).toFixed(2)}`,
-    credit: '₹0.00',
-    equity: `₹${parseFloat(mt5Account.equity || 0).toFixed(2)}`,
-    totalDeposit: `₹${stats.tradingDeposit.toFixed(2)}`
+    balance: `$${parseFloat(mt5Account.balance || 0).toFixed(2)}`,
+    credit: '$0.00',
+    equity: `$${parseFloat(mt5Account.equity || 0).toFixed(2)}`,
+    totalDeposit: `$${stats.tradingDeposit.toFixed(2)}`
   } : {
     accountNo: 'No Account',
     leverage: '500',
-    balance: '₹0.00',
-    credit: '₹0.00',
-    equity: '₹0.00',
-    totalDeposit: '₹0.00'
+    balance: '$0.00',
+    credit: '$0.00',
+    equity: '$0.00',
+    totalDeposit: '$0.00'
   };
 
   return (
@@ -305,7 +305,7 @@ function Dashboard() {
           <div className="balance-display">
             <span className="balance-label">BALANCE</span>
             <span className="balance-amount">
-              ₹{walletData?.total_balance?.toFixed(2) || '0.00'}
+              ${walletData?.total_balance?.toFixed(2) || '0.00'}
             </span>
           </div>
           {mt5Account && (
@@ -371,16 +371,16 @@ function Dashboard() {
                 gap: '15px' 
               }}>
                 <div>
-                  <strong>Balance:</strong> {parseFloat(mt5Account.balance || 0) < 0 ? '-' : ''}₹{Math.abs(parseFloat(mt5Account.balance || 0)).toFixed(2)}
+                  <strong>Balance:</strong> {parseFloat(mt5Account.balance || 0) < 0 ? '-' : ''}${Math.abs(parseFloat(mt5Account.balance || 0)).toFixed(2)}
                 </div>
                 <div>
-                  <strong>Equity:</strong> {parseFloat(mt5Account.equity || 0) < 0 ? '-' : ''}₹{Math.abs(parseFloat(mt5Account.equity || 0)).toFixed(2)}
+                  <strong>Equity:</strong> {parseFloat(mt5Account.equity || 0) < 0 ? '-' : ''}${Math.abs(parseFloat(mt5Account.equity || 0)).toFixed(2)}
                 </div>
                 <div>
-                  <strong>Margin:</strong> {parseFloat(mt5Account.margin || 0) < 0 ? '-' : ''}₹{Math.abs(parseFloat(mt5Account.margin || 0)).toFixed(2)}
+                  <strong>Margin:</strong> {parseFloat(mt5Account.margin || 0) < 0 ? '-' : ''}${Math.abs(parseFloat(mt5Account.margin || 0)).toFixed(2)}
                 </div>
                 <div>
-                  <strong>Free Margin:</strong> {parseFloat(mt5Account.free_margin || 0) < 0 ? '-' : ''}₹{Math.abs(parseFloat(mt5Account.free_margin || 0)).toFixed(2)}
+                  <strong>Free Margin:</strong> {parseFloat(mt5Account.free_margin || 0) < 0 ? '-' : ''}${Math.abs(parseFloat(mt5Account.free_margin || 0)).toFixed(2)}
                 </div>
                 <div>
                   <strong>Margin Level:</strong> {parseFloat(mt5Account.margin_level || 0).toFixed(2)}%
@@ -480,7 +480,7 @@ function Dashboard() {
                           <td>{pos.volume}</td>
                           <td>{pos.price_open}</td>
                           <td style={{ color: pos.profit >= 0 ? 'green' : 'red' }}>
-                          ₹{parseFloat(pos.profit || 0).toFixed(2)}
+                          ${parseFloat(pos.profit || 0).toFixed(2)}
                           </td>
                         </tr>
                       ))

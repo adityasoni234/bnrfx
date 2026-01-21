@@ -340,7 +340,7 @@ export default function SettingsPage() {
               
               <div className="form-grid">
                 <div className="form-group">
-                  <label>Minimum Deposit (₹)</label>
+                  <label>Minimum Deposit ($)</label>
                   <input
                     type="number"
                     value={settings.minDeposit}
@@ -349,7 +349,7 @@ export default function SettingsPage() {
                 </div>
 
                 <div className="form-group">
-                  <label>Minimum Withdrawal (₹)</label>
+                  <label>Minimum Withdrawal ($)</label>
                   <input
                     type="number"
                     value={settings.minWithdrawal}
@@ -414,7 +414,7 @@ export default function SettingsPage() {
                 </div>
 
                 <div className="form-group">
-                  <label>Commission Per Lot (₹)</label>
+                  <label>Commission Per Lot ($)</label>
                   <input
                     type="number"
                     value={settings.commissionPerLot}
@@ -428,9 +428,9 @@ export default function SettingsPage() {
                 <h4>💡 Commission Calculation Example</h4>
                 <p>If a client trades 1 lot:</p>
                 <ul>
-                  <li>Platform earns: ₹{settings.commissionPerLot}</li>
-                  <li>Master IB gets: ₹{(settings.commissionPerLot * settings.masterRebate / 100).toFixed(0)} ({settings.masterRebate}%)</li>
-                  <li>Super Master IB gets: ₹{(settings.commissionPerLot * settings.superMasterRebate / 100).toFixed(0)} ({settings.superMasterRebate}%)</li>
+                  <li>Platform earns: ${settings.commissionPerLot}</li>
+                  <li>Master IB gets: ${(settings.commissionPerLot * settings.masterRebate / 100).toFixed(0)} ({settings.masterRebate}%)</li>
+                  <li>Super Master IB gets: ${(settings.commissionPerLot * settings.superMasterRebate / 100).toFixed(0)} ({settings.superMasterRebate}%)</li>
                 </ul>
               </div>
 

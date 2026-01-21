@@ -92,21 +92,21 @@ export default function WalletsList() {
           <div className="stat-icon">💵</div>
           <div className="stat-info">
             <p>Total Balance</p>
-            <h3>₹{totalStats.totalBalance.toLocaleString()}</h3>
+            <h3>${totalStats.totalBalance.toLocaleString()}</h3>
           </div>
         </div>
         <div className="stat-card-small available">
           <div className="stat-icon">✅</div>
           <div className="stat-info">
             <p>Available Balance</p>
-            <h3>₹{totalStats.totalAvailable.toLocaleString()}</h3>
+            <h3>${totalStats.totalAvailable.toLocaleString()}</h3>
           </div>
         </div>
         <div className="stat-card-small locked">
           <div className="stat-icon">🔒</div>
           <div className="stat-info">
             <p>Locked Balance</p>
-            <h3>₹{totalStats.totalLocked.toLocaleString()}</h3>
+            <h3>${totalStats.totalLocked.toLocaleString()}</h3>
           </div>
         </div>
       </div>
@@ -179,17 +179,17 @@ export default function WalletsList() {
                   </td>
                   <td>
                     <span className="balance available">
-                      ₹{wallet.availableBalance.toLocaleString()}
+                      ${wallet.availableBalance.toLocaleString()}
                     </span>
                   </td>
                   <td>
                     <span className="balance locked">
-                      ₹{wallet.lockedBalance.toLocaleString()}
+                      ${wallet.lockedBalance.toLocaleString()}
                     </span>
                   </td>
                   <td>
                     <span className="balance total">
-                      ₹{wallet.totalBalance.toLocaleString()}
+                      ${wallet.totalBalance.toLocaleString()}
                     </span>
                   </td>
                   <td>
@@ -257,15 +257,15 @@ export default function WalletsList() {
               </div>
               <div className="detail-row">
                 <span className="detail-label">Available Balance:</span>
-                <span className="detail-value balance">₹{selectedWallet.availableBalance.toLocaleString()}</span>
+                <span className="detail-value balance">${selectedWallet.availableBalance.toLocaleString()}</span>
               </div>
               <div className="detail-row">
                 <span className="detail-label">Locked Balance:</span>
-                <span className="detail-value balance">₹{selectedWallet.lockedBalance.toLocaleString()}</span>
+                <span className="detail-value balance">${selectedWallet.lockedBalance.toLocaleString()}</span>
               </div>
               <div className="detail-row">
                 <span className="detail-label">Total Balance:</span>
-                <span className="detail-value balance">₹{selectedWallet.totalBalance.toLocaleString()}</span>
+                <span className="detail-value balance">${selectedWallet.totalBalance.toLocaleString()}</span>
               </div>
               <div className="detail-row">
                 <span className="detail-label">Currency:</span>

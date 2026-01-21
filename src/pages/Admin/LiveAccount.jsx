@@ -6,9 +6,10 @@ import { supabase } from '../../lib/supabase/client';
 import { api } from '../../services/api';
 
 const groupsList = {
-  "Comex":['IND\\3001\\COMEX\\340001\\10 USD-demo10lot','IND\\3001\\COMEX\\340001\\20 USD-demo10lot','IND\\3001\\COMEX\\340001\\30 USD-demo10lot'],
-  "Forex":['IND\\3001\\FOREX\\340001\\STANDARD-contest','IND\\3001\\FOREX\\340001\\GOLD-contest','IND\\3001\\FOREX\\340001\\VIP-contest'],
-  "Mcs":['IND\\3001\\LOT\\34001\\M200-F500-demo10lot'],
+  // "Comex":['IND\\3001\\COMEX\\340001\\10 USD-demo10lot','IND\\3001\\COMEX\\340001\\20 USD-demo10lot','IND\\3001\\COMEX\\340001\\30 USD-demo10lot'],
+  // "Forex":['IND\\3001\\FOREX\\340001\\STANDARD-contest','IND\\3001\\FOREX\\340001\\GOLD-contest','IND\\3001\\FOREX\\340001\\VIP-contest'],
+  "Forex":['IND\\3001\\FOREX\\340001\\STANDARD-contest'],
+  // "Mcs":['IND\\3001\\LOT\\34001\\M200-F500-demo10lot'],
 }
 
 function LiveAccount() {
@@ -47,7 +48,28 @@ function LiveAccount() {
       setCurrentUser(user);
 
       const mt5Accounts = await getUserMT5Accounts(user.user.id);
-      setAccounts(mt5Accounts || []);
+      
+      // If no accounts found, add a demo account
+      if (!mt5Accounts || mt5Accounts.length === 0) {
+        const demoAccount = {
+          id: 'demo-340012',
+          login_id: '340012',
+          password: 'bnrfx@123',
+          account_type: 'demo',
+          account_group: 'IND\\3001\\FOREX\\340001\\STANDARD-contest',
+          is_active: true,
+          currency: 'USD',
+          leverage: 500,
+          balance: 0,
+          equity: 0,
+          margin: 0,
+          free_margin: 0,
+          server_name: 'Hija Global Markets Ltd.'
+        };
+        setAccounts([demoAccount]);
+      } else {
+        setAccounts(mt5Accounts);
+      }
 
       // const groups = await api.getGroups();
       // setGroups(groups.data || []);
@@ -393,7 +415,9 @@ function LiveAccount() {
 
                   <div className="detail-row">
                     <span className="detail-label">Account Type</span>
-                    <span className="detail-value">{currentAccount.account_type}</span>
+                    <span className="detail-value">
+                      {currentAccount.account_type === 'demo' ? 'demo' : 'real'}
+                    </span>
                   </div>
 
                   <div className="detail-row">
@@ -408,22 +432,22 @@ function LiveAccount() {
 
                   <div className="detail-row">
                     <span className="detail-label">Balance</span>
-                    <span className="detail-value">₹{parseFloat(currentAccount.balance || 0).toFixed(2)}</span>
+                    <span className="detail-value">${parseFloat(currentAccount.balance || 0).toFixed(2)}</span>
                   </div>
 
                   <div className="detail-row">
                     <span className="detail-label">Equity</span>
-                    <span className="detail-value">₹{parseFloat(currentAccount.equity || 0).toFixed(2)}</span>
+                    <span className="detail-value">${parseFloat(currentAccount.equity || 0).toFixed(2)}</span>
                   </div>
 
                   <div className="detail-row">
                     <span className="detail-label">Margin</span>
-                    <span className="detail-value">₹{parseFloat(currentAccount.margin || 0).toFixed(2)}</span>
+                    <span className="detail-value">${parseFloat(currentAccount.margin || 0).toFixed(2)}</span>
                   </div>
 
                   <div className="detail-row">
                     <span className="detail-label">Free Margin</span>
-                    <span className="detail-value">₹{parseFloat(currentAccount.free_margin || 0).toFixed(2)}</span>
+                    <span className="detail-value">${parseFloat(currentAccount.free_margin || 0).toFixed(2)}</span>
                   </div>
                 </div>
               </div>

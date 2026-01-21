@@ -222,7 +222,7 @@ export default function DepositsList() {
           <div className="stat-icon">💰</div>
           <div className="stat-info">
             <p>Total Approved</p>
-            <h3>₹{stats.totalAmount.toLocaleString()}</h3>
+            <h3>${stats.totalAmount.toLocaleString()}</h3>
           </div>
         </div>
       </div>
@@ -309,7 +309,7 @@ export default function DepositsList() {
                     </div>
                   </td>
                   <td>
-                    <span className="amount">₹{deposit.amount.toLocaleString()}</span>
+                    <span className="amount">${deposit.amount.toLocaleString()}</span>
                   </td>
                   <td>
                     <span className="method-badge">{deposit.method.replace('_', ' ')}</span>
@@ -392,7 +392,7 @@ export default function DepositsList() {
               </div>
               <div className="detail-row">
                 <span className="detail-label">Amount:</span>
-                <span className="detail-value amount">₹{selectedDeposit.amount.toLocaleString()}</span>
+                <span className="detail-value amount">${selectedDeposit.amount.toLocaleString()}</span>
               </div>
               <div className="detail-row">
                 <span className="detail-label">Payment Method:</span>

@@ -99,7 +99,7 @@ export default function Deposit() {
     e.preventDefault();
     
     if (!amount || parseFloat(amount) < 1000) {
-      alert('Minimum deposit amount is ₹1,000');
+      alert('Minimum deposit amount is $1,000');
       return;
     }
 
@@ -449,7 +449,7 @@ export default function Deposit() {
                   >
                     {mt5Accounts.map((account) => (
                       <option key={account.id} value={account.login_id}>
-                        {account.login_id} - Balance: ₹{parseFloat(account.balance || 0).toFixed(2)}
+                        {account.login_id} - Balance: ${parseFloat(account.balance || 0).toFixed(2)}
                       </option>
                     ))}
                   </select>
@@ -458,16 +458,16 @@ export default function Deposit() {
 
               {/* Amount */}
               <div className="form-group">
-                <label>Deposit Amount (₹)</label>
+                <label>Deposit Amount ($)</label>
                 <input
                   type="number"
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
-                  placeholder="Enter amount (Min: ₹1,000)"
+                  placeholder="Enter amount (Min: $1,000)"
                   min="1000"
                   required
                 />
-                <small>Minimum deposit: ₹1,000</small>
+                <small>Minimum deposit: $1,000</small>
               </div>
 
               {/* Payment Method */}
@@ -600,7 +600,7 @@ export default function Deposit() {
                     </div>
                     <div className="history-details">
                       <div className="history-amount">
-                        ₹{parseFloat(deposit.amount).toLocaleString()}
+                        ${parseFloat(deposit.amount).toLocaleString()}
                       </div>
                       <div className="history-method">
                         {deposit.payment_method.replace('_', ' ').toUpperCase()}
@@ -628,7 +628,7 @@ export default function Deposit() {
           <div className="quick-info-card">
             <h3>💡 Quick Info</h3>
             <ul>
-              <li>Minimum deposit: ₹1,000</li>
+              <li>Minimum deposit: $1,000</li>
               <li>Processing time: Within 24 hours</li>
               <li>No deposit fees</li>
               <li>Instant credit after approval</li>

@@ -13,7 +13,7 @@ export default function BrokerLogin() {
   const [error, setError] = useState('');
 
   // Hardcoded admin credentials
-  const ADMIN_EMAIL = 'admin@rhynofx.com';
+  const ADMIN_EMAIL = 'admin@bnrfx.com';
   const ADMIN_PASSWORD = 'Rhynofx@xyz#';
 
   const handleChange = (e) => {

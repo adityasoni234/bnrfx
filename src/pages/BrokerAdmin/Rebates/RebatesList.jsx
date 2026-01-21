@@ -129,7 +129,7 @@ export default function RebatesList() {
           <div className="stat-icon">💵</div>
           <div className="stat-info">
             <p>Total Amount</p>
-            <h3>₹{stats.totalAmount.toLocaleString()}</h3>
+            <h3>${stats.totalAmount.toLocaleString()}</h3>
           </div>
         </div>
       </div>
@@ -228,13 +228,13 @@ export default function RebatesList() {
                     <span className="lots">{rebate.totalLots.toFixed(2)}</span>
                   </td>
                   <td>
-                    <span className="commission">₹{rebate.totalCommission.toLocaleString()}</span>
+                    <span className="commission">${rebate.totalCommission.toLocaleString()}</span>
                   </td>
                   <td>
                     <span className="rate">{rebate.rebateRate}%</span>
                   </td>
                   <td>
-                    <span className="rebate-amount">₹{rebate.rebateAmount.toLocaleString()}</span>
+                    <span className="rebate-amount">${rebate.rebateAmount.toLocaleString()}</span>
                   </td>
                   <td>
                     <span className={`status-badge status-${rebate.status.toLowerCase()}`}>
@@ -314,7 +314,7 @@ export default function RebatesList() {
               </div>
               <div className="detail-row">
                 <span className="detail-label">Total Commission:</span>
-                <span className="detail-value">₹{selectedRebate.totalCommission.toLocaleString()}</span>
+                <span className="detail-value">${selectedRebate.totalCommission.toLocaleString()}</span>
               </div>
               <div className="detail-row">
                 <span className="detail-label">Rebate Rate:</span>
@@ -322,7 +322,7 @@ export default function RebatesList() {
               </div>
               <div className="detail-row">
                 <span className="detail-label">Rebate Amount:</span>
-                <span className="detail-value amount">₹{selectedRebate.rebateAmount.toLocaleString()}</span>
+                <span className="detail-value amount">${selectedRebate.rebateAmount.toLocaleString()}</span>
               </div>
               <div className="detail-row">
                 <span className="detail-label">Status:</span>

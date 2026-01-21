@@ -39,8 +39,8 @@ const MT5Clients = () => {
             <h3>#{client.login} - {client.name}</h3>
             <p>Email: {client.email}</p>
             <p>Group: {client.group}</p>
-            <p>Balance: ₹{client.balance.toLocaleString()}</p>
-            <p>Equity: ₹{client.equity.toLocaleString()}</p>
+            <p>Balance: ${client.balance.toLocaleString()}</p>
+            <p>Equity: ${client.equity.toLocaleString()}</p>
             <p>Open Positions: {client.open_positions}</p>
             <p>Status: {client.status}</p>
           </div>

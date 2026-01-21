@@ -182,7 +182,7 @@ function IBDashboard() {
       <div className="ib-stats-grid">
         <div className="stat-card">
           <div className="stat-label">IB Balance</div>
-          <div className="stat-value green">₹{parseFloat(ibData.balance).toFixed(2)}</div>
+          <div className="stat-value green">${parseFloat(ibData.balance).toFixed(2)}</div>
         </div>
 
         <div className="stat-card">
@@ -192,7 +192,7 @@ function IBDashboard() {
 
         <div className="stat-card">
           <div className="stat-label">Payout Commission</div>
-          <div className="stat-value">₹{parseFloat(ibData.payoutCommission).toFixed(2)}</div>
+          <div className="stat-value">${parseFloat(ibData.payoutCommission).toFixed(2)}</div>
         </div>
 
         <div className="stat-card">
@@ -265,7 +265,7 @@ function IBDashboard() {
                 <span className="stat-text">Active Clients</span>
               </div>
               <div className="quick-stat-item">
-                <span className="stat-number">₹{ibData.totalEarned}</span>
+                <span className="stat-number">${ibData.totalEarned}</span>
                 <span className="stat-text">Total Earned</span>
               </div>
             </div>
@@ -287,17 +287,17 @@ function IBDashboard() {
             </thead>
             <tbody>
               <tr>
-                <td>₹0 - ₹100,000</td>
+                <td>$0 - $100,000</td>
                 <td>5% of deposits</td>
                 <td>Weekly</td>
               </tr>
               <tr>
-                <td>₹100,001 - ₹500,000</td>
+                <td>$100,001 - $500,000</td>
                 <td>7% of deposits</td>
                 <td>Weekly</td>
               </tr>
               <tr>
-                <td>₹500,001+</td>
+                <td>$500,001+</td>
                 <td>10% of deposits</td>
                 <td>Weekly</td>
               </tr>
