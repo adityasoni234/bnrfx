@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import '../../styles/Admin/AdminLayout.css';
 import { api } from '../../services/api';
 
-function AdminLayout({ children }) {
+function AdminLayout() {
   const [isSyncing, setIsSyncing] = useState(true);
 
   useEffect(() => {
     // Sync user's MT5 accounts when layout loads or page refreshes
     const syncUserAccounts = async () => {
       try {
+        debugger
         const userStr = localStorage.getItem('user');
         if (userStr) {
           const user = JSON.parse(userStr);
@@ -73,8 +75,8 @@ function AdminLayout({ children }) {
   return (
     <div className="admin-layout">
       <Sidebar />
-      <div className="admin-main">
-        {children}
+      <div className="admin-content">
+        <Outlet />
       </div>
     </div>
   );

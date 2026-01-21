@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   FiHome,
   FiUser,
@@ -15,12 +15,14 @@ import {
   FiLink,
   FiUserPlus,
   FiMenu,
-  FiX
+  FiX,
+  FiLogOut
 } from 'react-icons/fi';
 import '../../styles/Admin/Sidebar.css';
 
 function Sidebar() {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const [isIBRoomOpen, setIsIBRoomOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // ✅ mobile toggle
@@ -47,6 +49,8 @@ function Sidebar() {
   const closeSidebarOnMobile = () => {
     if (window.innerWidth <= 768) setIsSidebarOpen(false);
   };
+
+  
 
   return (
     <>
@@ -125,6 +129,15 @@ function Sidebar() {
               </div>
             )}
           </div>
+
+          {/* Logout Button */}
+          <Link
+              to={'/logout'}
+              className={`sidebar-item ${isActive('/logout') ? 'active' : ''}`}
+            >
+              <span className="sidebar-icon"><FiLogOut /></span>
+              <span className="sidebar-label">Logout</span>
+            </Link>
         </nav>
       </div>
     </>

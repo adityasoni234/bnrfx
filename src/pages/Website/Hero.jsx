@@ -56,7 +56,7 @@ function Hero({ onOpenModal }) {
 
   const handleWhatsAppClick = () => {
     // Replace with your actual WhatsApp number
-    window.open('https://wa.me/+12087390893', 'I want to trade in Fx with BNR Fx');
+    window.open('https://wa.me/+12087390893?text=I%20want%20to%20trade%20in%20Fx%20with%20BNR%20Fx', '_blank');
   };
 
   return (

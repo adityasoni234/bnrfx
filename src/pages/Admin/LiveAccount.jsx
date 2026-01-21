@@ -124,10 +124,10 @@ function LiveAccount() {
               password: accountData.trading_password,
               account_group: accountData.group,
               leverage: accountData.leverage,
-              balance: 10000,
-              equity: 10000,
+              balance: 0,
+              equity: 0,
               margin: 0,
-              free_margin: 10000,
+              free_margin: 0,
               margin_level: 0,
             
             }
@@ -369,7 +369,7 @@ function LiveAccount() {
                   <div className="detail-row">
                     <span className="detail-label">Server Name</span>
                     <div className="detail-value-copy">
-                      <span>{currentAccount.server_name}</span>
+                      <span>Hija Global Markets Ltd.</span>
                       <button
                         className="copy-btn"
                         onClick={() => handleCopy(currentAccount.server_name, 'Server Name')}
