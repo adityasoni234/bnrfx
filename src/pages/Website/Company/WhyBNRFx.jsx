@@ -318,7 +318,7 @@ const WhyBNRFx = () => {
         <div className="cta-section">
           <h2>Ready to Trade with Purpose?</h2>
           <p>Join a community of disciplined traders who value transparency, technology, and professional standards.</p>
-          <a href="#" className="cta-button">Start Trading Today</a>
+          <a href="/register" className="cta-button">Start Trading Today</a>
         </div>
       </div>
     </div>

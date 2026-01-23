@@ -160,7 +160,7 @@ function Footer() {
             </div>
 
             {/* Platform */}
-            <div className="footer-column">
+            {/* <div className="footer-column">
               <h4 className="footer-heading">Platform</h4>
               <ul className="footer-links">
                 {footerLinks.platform.map((link, index) => (
@@ -169,7 +169,7 @@ function Footer() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

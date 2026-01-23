@@ -63,7 +63,7 @@ const StandardAccount = () => {
         <div className="cta">
           <h2>Open Standard Account</h2>
           <p>Start trading with competitive conditions and zero commission</p>
-          <a href="#" className="cta-button">Get Started</a>
+          <a href="/register" className="cta-button">Get Started</a>
         </div>
       </div>
     </div>

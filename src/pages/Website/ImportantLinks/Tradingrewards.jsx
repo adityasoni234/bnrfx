@@ -335,7 +335,7 @@ const TradingRewards = () => {
         <div className="cta-section">
           <h2>Start Earning Rewards Today</h2>
           <p>Join our Trading Rewards Program and get recognized for your disciplined trading approach.</p>
-          <a href="#" className="cta-button">Learn More</a>
+          <a href="/register" className="cta-button">Learn More</a>
         </div>
       </div>
     </div>

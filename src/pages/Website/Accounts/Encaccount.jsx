@@ -117,7 +117,7 @@ const ENCAccount = () => {
         <div className="cta">
           <h2>Open ENC Account</h2>
           <p>Experience professional-grade trading with raw spreads and institutional execution</p>
-          <a href="#" className="cta-button">Get Started</a>
+          <a href="/register" className="cta-button">Get Started</a>
         </div>
       </div>
     </div>

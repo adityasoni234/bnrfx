@@ -4,7 +4,7 @@ const mockMT5Data = require('../data/mockMT5Data');
 class MT5Service {
   constructor() {
     // Python Bridge Configuration
-    this.pythonBridgeURL = process.env.PYTHON_BRIDGE_URL || 'https://mt5.bnrfx.com';
+    this.pythonBridgeURL = process.env.PYTHON_BRIDGE_URL || 'http://mt5.bnrfx.com';
     this.useRealAPI = true;
     this.isConnected = false;
     

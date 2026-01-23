@@ -389,7 +389,7 @@ const DepositBonus = () => {
         <div className="cta-section">
           <h2>Claim Your 20% Bonus Today</h2>
           <p>Start trading with enhanced margin support and take advantage of market opportunities</p>
-          <a href="#" className="cta-button">Open Trading Account</a>
+          <a href="/register" className="cta-button">Open Trading Account</a>
         </div>
       </div>
     </div>

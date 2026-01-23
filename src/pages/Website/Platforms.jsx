@@ -20,19 +20,24 @@ function Platforms() {
                     <p>At BNR Fx, we combine cutting-edge technology with deep market insights to help you maximize profits, manage risks, and stay ahead in the ever-changing forex landscape.</p>
                   </div>
                   <div className="app-buttons">
+
                     <div className="store-button google-play">
+                      <a href="/register" >
                       <span className="store-icon">▶</span>
                       <div>
                         <div className="store-text-small">Get it on</div>
                         <div className="store-text-large">Google Play</div>
                       </div>
+                      </a>
                     </div>
                     <div className="store-button app-store">
+                       <a href="/register" >
                       <span className="store-icon">▶</span>
                       <div>
                         <div className="store-text-small">Download on the</div>
                         <div className="store-text-large">App Store</div>
                       </div>
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -84,23 +89,27 @@ function Platforms() {
             </div>
 
             <div className="download-badges">
+               <a href="/register" >
               <div className="download-badge">
                 <div className="badge-icon">▶</div>
                 <div className="badge-text">
                   <div className="badge-small">GET IT ON</div>
                   <div className="badge-large">Google Play</div>
                 </div>
-                <div className="coming-soon">Coming Soon</div>
+                <div className="coming-soon">Get Offer</div>
               </div>
-              
+              </a>
               <div className="download-badge">
+                 <a href="/register" >
                 <div className="badge-icon">▶</div>
                 <div className="badge-text">
                   <div className="badge-small">Download on the</div>
                   <div className="badge-large">App Store</div>
                 </div>
-                <div className="coming-soon">Coming Soon</div>
+                <div className="coming-soon">Get Offer</div>
+                </a>
               </div>
+              
             </div>
           </div>
         </div>
